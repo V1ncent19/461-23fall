@@ -1,0 +1,325 @@
+\documentclass[11pt,a4paper]{ctexart}
+%以下为所使用的宏包
+\usepackage{ulem}%下划线
+\usepackage{amsmath,amsfonts,amssymb,amsthm,amsbsy}%数学符号
+\usepackage{graphicx}%插入图片
+\usepackage{booktabs}%三线表
+%\usepackage{indentfirst}%首行缩进
+\usepackage{tikz}%作图
+\usepackage{appendix}%附录
+\usepackage{array}%多行公式/数组
+\usepackage{makecell}%表格缩并
+\usepackage{siunitx}%SI单位--\SI{number}{unit}
+\usepackage{mathrsfs}%数学字体
+\usepackage{enumitem}%列表间距
+\usepackage{multirow}%列表横向合并单元格
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green]{hyperref}%超链接引用
+\usepackage{float}%图片、表格位置排版
+\usepackage{pict2e,keyval,fp,diagbox}%带有斜线的表格
+\usepackage{fancyvrb,listings}%设置代码插入环境
+\usepackage{minted}%代码环境设置
+\usepackage{fontspec}%字体设置
+\usepackage{color,xcolor}%颜色设置
+\usepackage{titlesec} %自定义标题格式
+\usepackage{tabularx}%列表扩展
+\usepackage{authblk}%titlepage作者信息
+\usepackage{nicematrix}%更好的矩阵标定
+\usepackage{fbox}%更多浮动体盒子
+
+
+
+%以下是页边距设置
+\usepackage[left=0.5in,right=0.5in,top=0.81in,bottom=0.8in]{geometry}
+
+%以下是段行设置
+\linespread{1.4}%行距
+\setlength{\parskip}{0.1\baselineskip}%段距
+\setlength{\parindent}{2em}%缩进
+
+
+%其他设置
+\numberwithin{equation}{section}%公式按照章节编号
+\newenvironment{point}{\raggedright$\blacktriangleright$}{}
+\newenvironment{algorithm}[1]{\vspace{12pt} \hrule\hrule \vspace{3pt} \noindent\textbf{\color[HTML]{E63F00}Algorithm } \,\textit{#1} \vspace{3pt} \hrule\vspace{6pt}}{\vspace{6pt}\hrule\hrule \vspace{12pt}} % 算法伪代码格式环境
+
+
+%代码环境\lst设置
+\definecolor{CodeBlue}{HTML}{268BD2}
+\definecolor{CodeBlue2}{HTML}{0000CD}
+\definecolor{CodeGreen}{HTML}{2AA1A2}
+\definecolor{CodeRed}{HTML}{CB4B16}
+\definecolor{CodeYellow}{HTML}{B58900}
+\definecolor{CodePurPle}{HTML}{D33682}
+\definecolor{CodeGreen2}{HTML}{859900}
+\lstset{
+    basicstyle=\tt,%字体设置
+    numbers=left, %设置行号位置
+    numberstyle=\tiny\color{black}, %设置行号大小
+    keywordstyle=\color{black}, %设置关键字颜色
+    stringstyle=\color{CodeRed}, %设置字符串颜色
+    commentstyle=\color{CodeGreen}, %设置注释颜色
+    frame=single, %设置边框格式
+    escapeinside=`, %逃逸字符(1左面的键)，用于显示中文
+    %breaklines, %自动折行
+    extendedchars=false, %解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em, %设置边距
+    tabsize=4, %设置tab空格数
+    showspaces=false, %不显示空格
+    emph={TRUE,FALSE,NULL,NAN,NA,<-,},emphstyle=\color{CodeBlue2}, %其他高亮}
+}
+
+
+%节标题格式设置
+\titleformat{\section}[block]{\large\bfseries}{Exercise \arabic{section}}{1em}{}[]
+\titleformat{\subsection}[block]{}{    \arabic{section}.(\alph{subsection})}{1em}{}[]
+% \titleformat{\subsubsection}[block]{\normalsize\bfseries}{    \arabic{subsection}-\alph{subsubsection}}{1em}{}[]
+% \titleformat{\paragraph}[block]{\small\bfseries}{[\arabic{paragraph}]}{1em}{}[]
+
+
+% \titleformat{\sectioncommand}[shape]{format}{title-label}{sep}{before-title}[after-title]
+
+
+
+% 中文字号
+% 初号42pt, 小初36pt, 一号26pt, 小一24pt, 二号22pt, 小二18pt, 三号16pt, 小三15pt, 四号14pt, 小四12pt, 五号10.5pt, 小五9pt
+
+
+\begin{document}
+
+\begin{center}\thispagestyle{plain}
+
+{\LARGE\textbf{Stat461 - 2023 Fall}}
+
+{\Large\textbf{HW3}}
+
+Tuorui Peng\footnote{TuoruiPeng2028@u.northwestern.edu}
+\end{center}
+
+\thispagestyle{myheadings}\markright{Compiled using \LaTeX}
+\pagestyle{myheadings}\markright{Tuorui Peng}
+
+
+
+
+
+
+\section{}
+
+\subsection{}
+
+We consider the following:
+\begin{align*}
+    \dfrac{ 1 }{ d } \left\Vert X\Delta \right\Vert _2^2 =& \left\Vert X(\Delta _S+\Delta _{S^\complement}) \right\Vert _2^2 \\
+    =& \underbrace{ \Delta _S'\dfrac{ X'X }{ n  } \Delta _S}_{\text{I}} + \underbrace{ \Delta _{S^\complement}'\dfrac{ X'X }{ n  } \Delta _{S^\complement}  }_{\text{II}} + \underbrace{ 2\Delta _S'\dfrac{ X'X }{ n  } \Delta _{S^\complement} }_{\text{III}}
+\end{align*}
+in which each term can be bounded as follows:
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item[I:] Using the bound on $  \left\Vert \dfrac{ X'X }{ n  } -I  \right\Vert _\infty $ we have
+    \begin{align*}
+        \Delta _S'\dfrac{ X'X }{ n  } \Delta _S =& \Delta _S'\Delta _S + \Delta _S'\bigl(\dfrac{ X'X }{ n  } -I\bigr)\Delta _S \\
+        \geq & \Delta _S'\Delta _S - \left\vert \Delta _S \right\vert _1^2 \left\Vert \dfrac{ X'X }{ n  } -I  \right\Vert _\infty \\
+        \geq & \left\Vert \Delta _S  \right\Vert _2^2 - \dfrac{ 1 }{ 32k } \left\vert \Delta _S \right\vert _1^2 
+    \end{align*}
+    \item[II:] Similarly, we have
+    \begin{align*}
+        \Delta _{S^\complement}'\dfrac{ X'X }{ n  } \Delta _{S^\complement} \geq \left\Vert \Delta _{S^\complement}  \right\Vert _2^2 - \dfrac{ 1 }{ 32k } \left\vert \Delta _{S^\complement} \right\vert _1^2 \\
+        \geq & \left\Vert \Delta _{S^\complement}  \right\Vert _2^2 - \dfrac{ 9 }{ 32k } \left\vert \Delta _{S} \right\vert _1^2
+    \end{align*}
+    \item[III:] Note that we have $ \Delta _S'\Delta _{S^\complement}=0 $,
+    \begin{align*}
+         2\Delta _S'\dfrac{ X'X }{ n  } \Delta _{S^\complement} =& 2 \Delta _S'\bigl(\dfrac{ X'X }{ n  } - I \bigr)\Delta _{S^\complement} \\
+         \geq & -\dfrac{ 1 }{ 32k } \left\vert \Delta _S \right\vert _1 \left\Vert \Delta _{S^\complement} \right\Vert _1\\
+         \geq & -\dfrac{ 3 }{ 32k } \left\vert \Delta _S \right\vert _1 ^2
+    \end{align*}
+    
+\end{itemize}
+
+Together, we have
+\begin{align*}
+    \dfrac{ 1 }{ n } \left\Vert X\Delta  \dfrac{ 1 }{ n }\right\Vert _2^2 \geq & \left\Vert \Delta _S  \right\Vert _2^2 - \dfrac{ 1 }{ 32k } \left\vert \Delta _S \right\vert _1^2 + \left\Vert \Delta _{S^\complement}  \right\Vert _2^2 - \dfrac{ 9 }{ 32k } \left\vert \Delta _{S} \right\vert _1^2 - \dfrac{ 3 }{ 32k } \left\vert \Delta _S \right\vert _1 ^2 \\
+    = & \left\Vert \Delta  \right\Vert _2^2 - \dfrac{ 1 }{ 2k } \left\Vert \Delta _S \right\Vert _1^2
+\end{align*}
+
+Using Cauchy-Schwarz inequality, we have $ \left\Vert \Delta _S \right\Vert _1\leq \left\vert S  \right\vert \left\Vert ^{1/2} \Delta _S  \right\Vert _2 $, and thus
+\begin{align*}
+    \dfrac{ 1 }{ n } \left\Vert X\Delta  \dfrac{ 1 }{ n }\right\Vert _2^2 \geq &\left\Vert \Delta  \right\Vert _2^2 - \dfrac{ 1 }{ 2 } \left\Vert \Delta _S \right\Vert _2^2\\
+    \geq & \dfrac{ 1 }{ 2 } \left\Vert \Delta  \right\Vert _2^2
+\end{align*}
+
+
+
+
+\subsection{}
+
+Using Gershgorin circle theorem, we have
+\begin{align*}
+    \gamma (\dfrac{ X_S'X_S }{ n } ) \in [1-\dfrac{ \left\vert S \right\vert  }{ 32k }, 1+\dfrac{ \left\vert S \right\vert  }{ 32k }]\subset [1-\dfrac{ 1 }{ 32 }, 1+\dfrac{ 1 }{ 32 }] 
+\end{align*}
+thus we have
+\begin{align*}
+    \gamma (\dfrac{ X_S'X_S }{ n } )^{-1} \in [\dfrac{ 32 }{ 33 }, \dfrac{ 32 }{ 31 }]  
+\end{align*}
+
+We have for any $ j\in S^\complement $:
+\begin{align*}
+    \left\Vert (X_S'X_S)^{-1}X_SX_j \right\Vert  _1 \leq & \left\Vert (X_S'X_S)^{-1} \right\Vert _2 \left\Vert X_SX_j \right\Vert _\infty \\
+     \leq & \dfrac{ 32 }{ 33 } \cdot \dfrac{ 1 }{ 32k }= \dfrac{ 1 }{ 33k } < 1  
+\end{align*}
+
+
+\subsection{}
+
+Denote $ X = \{\varepsilon _{li}\}_{l\in [n], k\in [d]} $. We have for any $ i,j\in [d] $:
+\begin{align*}
+     \dfrac{ X_i'X_j  }{ n } - \delta _{ij} = & \dfrac{ 1 }{ n } \sum_{l=1}^{n} \varepsilon _{li}\varepsilon _{lj} - \delta _{ij} 
+\end{align*}
+being a zero-mean sub-Gaussian random variable with some parameter $ \sigma ^2/n $, we using the bound on the maximum of sub-Gaussian random variables, we have
+\begin{align*}
+    \mathbb{E}\left[ \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  \right]  \lesssim & \sigma \sqrt{ \log d/n }
+\end{align*}
+now it suffices to bound 
+\begin{align*}
+    \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  - \mathbb{E}\left[ \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  \right]
+\end{align*}
+Note that function $ \{\varepsilon _{ij}\} \mapsto \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert $ is $ 2/n $-Lipschitz, thus we have concentration inequality:
+\begin{align*}
+    \left\vert \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  - \mathbb{E}\left[ \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  \right]  \right\vert \leq t \quad w.p. \geq 1-2\exp(-nt^2/2)
+\end{align*}
+
+set $ 2\exp (-nt^2/2) = \delta  $, we have w.p. at least $ 1-\delta $:
+\begin{align*}
+    \left\vert \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert \leq  \mathbb{E}\left[ \max_{i,j} \left\vert \dfrac{ X_i'X_j  }{ n } - \delta _{ij} \right\vert  \right]  \right\vert + \sqrt{\dfrac{ 2\log 2/\delta  }{ n } } \leq \dfrac{ 1 }{ 32k }  
+\end{align*}
+i.e.
+\begin{align*}
+    C\sqrt{\dfrac{ \log d }{ n  }} + \sqrt{\dfrac{ 2\log 2/\delta  }{ n } } \leq \dfrac{ 1 }{ 32k } 
+\end{align*}
+To satisfy the above inequality, we need 
+\begin{align*}
+    n\geq 2^{2\times 5}k^2(C\sqrt{\log d} + \sqrt{2\log 2/\delta}) \gtrsim  Ck^2(\log d + \log \dfrac{ 1 }{ \delta  } ) 
+\end{align*}
+
+
+
+\section{MJW 7.11}
+
+\subsection{}
+
+We have for $ \theta \in \mathbb{C}_\alpha (S) $:
+\begin{align*}
+    \left\Vert \theta  \right\Vert _1^2= & (\left\Vert \theta _S \right\Vert _1 + \left\Vert \theta _{S^\complement} \right\Vert _1 )^2\\
+    \leq& ( 1+\alpha )^2 \left\Vert \theta _S  \right\Vert _1^2\\
+    \leq& ( 1+\alpha )^2 \left\vert S  \right\vert  \left\Vert \theta  \right\Vert _2^2
+\end{align*}
+Thus using bound (\textbf{MJW 7.13}) we have 
+\begin{align*}
+     \dfrac{ \left\Vert X\theta  \right\Vert _2^2  }{ n  } \geq c_1\left\Vert \sqrt{\Sigma }\theta  \right\Vert _2^2 - c_2\rho ^2(\Sigma )\dfrac{ \log d  }{ n  } \left\Vert \theta  \right\Vert _1^2 \geq & c_1\gamma _{\min} (\Sigma )\left\Vert \theta  \right\Vert _2^2 - c_2\rho ^2(\Sigma )\dfrac{ \log d  }{ n  }(1+\alpha)^2\left\vert S  \right\vert \left\Vert \theta  \right\Vert _2^2 \\
+     =& \left( c_1\gamma _{\min} (\Sigma ) - c_2\rho ^2(\Sigma )\dfrac{ \log d  }{ n  }(1+\alpha)^2\left\vert S  \right\vert  \right)\left\Vert \theta  \right\Vert _2^2 \\
+     =& \dfrac{ c_1 }{ 2 } \gamma _{\min} (\Sigma )\left\Vert \theta  \right\Vert _2^2
+\end{align*}
+which requires
+\begin{align*}
+    \left\vert S  \right\vert \leq & \dfrac{ c_1 }{ 2c_2 } \dfrac{ \gamma _{\min} (\Sigma ) }{ \rho ^2(\Sigma ) }(1+\alpha)^{-2}\dfrac{ n }{ \log d } 
+\end{align*}
+
+\subsection{}
+
+We can just choose $ \Sigma ^{(d)}= dI $, for which we have
+\begin{align*}
+    \gamma _{\max}\to \infty ,\qquad \dfrac{ \gamma _{\min} }{ \rho ^2 } = 1  
+\end{align*}
+
+
+\section{MJW 7.17}
+
+\subsection{}
+The solution is given by
+\begin{align*}
+    \theta =& \mathop{ \arg\min  }\limits_{\theta \in \mathbb{R}^d} \dfrac{ 1 }{ \sqrt{n } } \left\Vert y-X\theta  \right\Vert _2 + \gamma _n\left\Vert \theta   \right\Vert _1 
+\end{align*}
+which has equivalent form
+\begin{align*}
+    \Leftrightarrow & \mathop{ \arg\min  }\limits_{\theta \in \mathbb{R}^d} \dfrac{ 1 }{ \sqrt{n} } \left\Vert y-X\theta  \right\Vert _2, \quad \text{s.t. } \left\Vert \theta  \right\Vert _1\leq R_n \\
+    \Leftrightarrow & \mathop{ \arg\min  }\limits_{\theta \in \mathbb{R}^d} \dfrac{ 1 }{ 2n } \left\Vert y-X\theta  \right\Vert _2^2, \quad \text{s.t. } \left\Vert \theta  \right\Vert _1\leq R_n\\
+    \Leftrightarrow & \mathop{ \arg\min  }\limits_{\theta \in \mathbb{R}^d} \dfrac{ 1 }{ 2n } \left\Vert y-X\theta  \right\Vert _2^2+ \lambda _n\left\Vert \theta  \right\Vert _1
+\end{align*}
+which is the Lagrange form of LASSO problem.
+
+\subsection{}
+The result is trivial by taking sub-differential of the objective function.
+\begin{align*}
+    \dfrac{\mathrm{d}^{}  }{\mathrm{d} \theta ^{} } \dfrac{ 1 }{ \sqrt{n } } \left\Vert y-X\theta  \right\Vert _2 = & \dfrac{ \frac{1}{n} X'(X\theta -y) }{ \frac{1}{\sqrt{n}}\left\Vert y-X\theta  \right\Vert _2 } 
+\end{align*}
+
+\subsection{}
+Using the previous result, we have
+\begin{align*}
+    &\dfrac{ \frac{1}{n} X'(X\theta -y) }{ \frac{1}{\sqrt{n}}\left\Vert y-X\theta  \right\Vert _2 } + \gamma _n\hat{z}=0\\
+     \Rightarrow & \left\langle \dfrac{ \hat{\Delta } }{ \sqrt{n} }, \frac{1}{\sqrt{n}} X'(X\theta -X\theta ^*-w)   \right\rangle + \gamma _n \dfrac{ \left\Vert X\theta ^* + w-X\theta  \right\Vert _2 }{ \sqrt{n} } \left\langle \hat{\Delta }, \hat{z} \right\rangle =0 
+\end{align*}
+in which we use $ y=X\theta ^* +w $. Then if $ \theta ^* $ is $ \left\vert S \right\vert  $-sparse on set $ S $, we have
+\begin{align*}
+    \dfrac{ \left\Vert X\hat{\Delta } \right\Vert _2^2 }{ n }=& \left\langle \dfrac{ \hat{\Delta } }{ \sqrt{n} }, \dfrac{ 1 }{ \sqrt{n} } X'X\hat{\Delta }   \right\rangle \\
+    =& \left\langle \hat{\Delta }, \dfrac{ 1 }{ n  } X'w \right\rangle + \gamma _n\dfrac{ \left\Vert y-X\hat{\theta } \right\Vert _2 }{ \sqrt{n} } \left\langle \hat{\Delta }, \hat{z} \right\rangle     \\
+    \leq &\left\langle \hat{\Delta }, \dfrac{ 1 }{ n  } X'w \right\rangle + \gamma _n\dfrac{ \left\Vert y-X\hat{\theta } \right\Vert _2 }{ \sqrt{n} } \big[ \left\Vert \hat{\Delta }_S  \right\Vert _1 - \left\Vert \hat{\Delta }_{S^\complement}  \right\Vert _1  \big]
+\end{align*}
+
+\subsection{}
+We have
+\begin{align*}
+    0\leq\dfrac{ \left\Vert X\hat{\Delta } \right\Vert _2^2 }{ n } \leq &  \left\langle \hat{\Delta }, \dfrac{ 1 }{ n  } X'w \right\rangle + \gamma _n\dfrac{ \left\Vert y-X\hat{\theta } \right\Vert _2 }{ \sqrt{n} } \big[ \left\Vert \hat{\Delta }_S  \right\Vert _1 - \left\Vert \hat{\Delta }_{S^\complement}  \right\Vert _1  \big]\\
+    \leq & \dfrac{ \gamma _n  }{ 2 \sqrt{n} }  \bigl(\left\Vert \hat{\Delta } _S\right\Vert _1 +\left\Vert \hat{\Delta }_{S^\complement} \right\Vert _1 \bigr) \left\Vert w \right\Vert _2 + \dfrac{ \gamma _n  }{ \sqrt{n} }  \left\Vert y-X\hat{\theta } \right\Vert _2 \bigl(\left\Vert \hat{\Delta } _S\right\Vert _1 -\left\Vert \hat{\Delta }_{S^\complement} \right\Vert _1 \bigr)\\
+    \leq  & \dfrac{ \gamma _n \left\Vert w \right\Vert _2 }{ 2\sqrt{n} }\bigl( 3\left\Vert \hat{\Delta }_S     \right\Vert _1 -\left\Vert \hat{\Delta }_{S^\complement} \right\Vert _1 \bigr)\\
+     \Rightarrow &3\left\Vert \hat{\Delta }_S     \right\Vert _1 \geq \left\Vert \hat{\Delta }_{S^\complement} \right\Vert _1
+\end{align*}
+
+
+\subsection{}
+Using the fact that $ \left\Vert \hat{w} \right\Vert _2 \leq \left\Vert w \right\Vert _2  $ we have:
+\begin{align*}
+    s\gamma _n^2\left\Vert \hat{\Delta } \right\Vert _2\leq&    \kappa \left\Vert \hat{\Delta } \right\Vert _2^2 \\
+    \leq & \dfrac{ 1 }{ n  } \left\Vert X\hat{\Delta } \right\Vert _2^2 \\
+    \leq & \dfrac{ 2w'X\hat{\Delta } }{ n  } \\
+    \leq & \dfrac{ 2 }{ n  } \left\Vert X\hat{\Delta  } \right\Vert _\infty \left\Vert \hat{\Delta  } \right\Vert _1\\
+    \leq & \dfrac{ \gamma _n  }{ \sqrt{n} }\left\Vert w \right\Vert _2 \sqrt{s} \left\Vert \hat{\Delta } \right\Vert _2 
+\end{align*}
+rearrenging the terms, we have
+\begin{align*}
+    \left\Vert \hat{\Delta } \right\Vert _2 \leq \dfrac{ \left\Vert w \right\Vert _2 }{ \sqrt{n} } \color{red}\dfrac{ 1 }{ \gamma _n \sqrt{s} }
+\end{align*}
+
+{\color{red} assuming $ \kappa =1 $ could yield the result in MJW.}
+
+
+\section{MJW 13.4}
+
+\subsection{}
+
+We have
+\begin{align*}
+    \text{star-shaped around }x^*\Leftrightarrow & \alpha (x-x^*)\in C-x^* \quad \forall x\in C, \forall \alpha \in [0,1]\\
+    \Leftrightarrow & \alpha x + (1-\alpha)x^*\in C \quad \forall x\in C, \forall \alpha \in [0,1]
+\end{align*}
+
+\subsection{}
+
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item[$  \Rightarrow  $] If $ C $ is convex, then for any given $ x^*\in C $ we have
+    \begin{align*}
+        \alpha x + (1-\alpha)x^*\in C \quad \forall x\in C, \forall \alpha \in [0,1]  \Rightarrow \text{star-shaped around }x^* 
+    \end{align*}
+    \item[$  \Leftarrow  $] If $ C $ is star-shaped around and $ x^*\in C $, then for any $ x,y\in C $ and $ \alpha \in [0,1] $, we have
+    \begin{align*}
+        \alpha x + (1-\alpha)y\in C \Rightarrow C \text{ is convex.} 
+    \end{align*}
+    
+    
+\end{itemize}
+    
+    
+
+
+
+
+
+\end{document}

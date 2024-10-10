@@ -1,0 +1,464 @@
+\documentclass[11pt,a4paper]{ctexart}
+%以下为所使用的宏包
+\usepackage{ulem}%下划线
+\usepackage{amsmath,amsfonts,amssymb,amsthm,amsbsy}%数学符号
+\usepackage{graphicx}%插入图片
+\usepackage{booktabs}%三线表
+%\usepackage{indentfirst}%首行缩进
+\usepackage{tikz}%作图
+\usepackage{appendix}%附录
+\usepackage{array}%多行公式/数组
+\usepackage{makecell}%表格缩并
+\usepackage{siunitx}%SI单位--\SI{number}{unit}
+\usepackage{mathrsfs}%数学字体
+\usepackage{enumitem}%列表间距
+\usepackage{multirow}%列表横向合并单元格
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=green]{hyperref}%超链接引用
+\usepackage{float}%图片、表格位置排版
+\usepackage{pict2e,keyval,fp,diagbox}%带有斜线的表格
+\usepackage{fancyvrb,listings}%设置代码插入环境
+\usepackage{minted}%代码环境设置
+\usepackage{fontspec}%字体设置
+\usepackage{color,xcolor}%颜色设置
+\usepackage{titlesec} %自定义标题格式
+\usepackage{tabularx}%列表扩展
+\usepackage{authblk}%titlepage作者信息
+\usepackage{nicematrix}%更好的矩阵标定
+\usepackage{fbox}%更多浮动体盒子
+
+
+
+%以下是页边距设置
+\usepackage[left=0.5in,right=0.5in,top=0.81in,bottom=0.8in]{geometry}
+
+%以下是段行设置
+\linespread{1.4}%行距
+\setlength{\parskip}{0.1\baselineskip}%段距
+\setlength{\parindent}{2em}%缩进
+
+
+%其他设置
+\numberwithin{equation}{section}%公式按照章节编号
+\newenvironment{point}{\raggedright$\blacktriangleright$}{}
+\newenvironment{algorithm}[1]{\vspace{12pt} \hrule\hrule \vspace{3pt} \noindent\textbf{\color[HTML]{E63F00}Algorithm } \,\textit{#1} \vspace{3pt} \hrule\vspace{6pt}}{\vspace{6pt}\hrule\hrule \vspace{12pt}} % 算法伪代码格式环境
+
+
+%代码环境\lst设置
+\definecolor{CodeBlue}{HTML}{268BD2}
+\definecolor{CodeBlue2}{HTML}{0000CD}
+\definecolor{CodeGreen}{HTML}{2AA1A2}
+\definecolor{CodeRed}{HTML}{CB4B16}
+\definecolor{CodeYellow}{HTML}{B58900}
+\definecolor{CodePurPle}{HTML}{D33682}
+\definecolor{CodeGreen2}{HTML}{859900}
+\lstset{
+    basicstyle=\tt,%字体设置
+    numbers=left, %设置行号位置
+    numberstyle=\tiny\color{black}, %设置行号大小
+    keywordstyle=\color{black}, %设置关键字颜色
+    stringstyle=\color{CodeRed}, %设置字符串颜色
+    commentstyle=\color{CodeGreen}, %设置注释颜色
+    frame=single, %设置边框格式
+    escapeinside=`, %逃逸字符(1左面的键)，用于显示中文
+    %breaklines, %自动折行
+    extendedchars=false, %解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em, %设置边距
+    tabsize=4, %设置tab空格数
+    showspaces=false, %不显示空格
+    emph={TRUE,FALSE,NULL,NAN,NA,<-,},emphstyle=\color{CodeBlue2}, %其他高亮}
+}
+
+
+%节标题格式设置
+\titleformat{\section}[block]{\large\bfseries}{Exercise \arabic{section}}{1em}{}[]
+\titleformat{\subsection}[block]{}{    \arabic{section}.(\alph{subsection})}{1em}{}[]
+% \titleformat{\subsubsection}[block]{\normalsize\bfseries}{    \arabic{subsection}-\alph{subsubsection}}{1em}{}[]
+% \titleformat{\paragraph}[block]{\small\bfseries}{[\arabic{paragraph}]}{1em}{}[]
+
+
+% \titleformat{\sectioncommand}[shape]{format}{title-label}{sep}{before-title}[after-title]
+
+
+
+% 中文字号
+% 初号42pt, 小初36pt, 一号26pt, 小一24pt, 二号22pt, 小二18pt, 三号16pt, 小三15pt, 四号14pt, 小四12pt, 五号10.5pt, 小五9pt
+
+
+\begin{document}
+
+\begin{center}\thispagestyle{plain}
+
+{\LARGE\textbf{Stat461 - 2023 Fall}}
+
+{\Large\textbf{HW2}}
+
+Tuorui Peng\footnote{TuoruiPeng2028@u.northwestern.edu}
+\end{center}
+
+\thispagestyle{myheadings}\markright{Compiled using \LaTeX}
+\pagestyle{myheadings}\markright{Tuorui Peng}
+
+
+
+
+
+
+\section{}
+
+\subsection{}
+
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item[$  \Rightarrow  $] We prove by contradiction. Suppose $ T $ is unbounded, we can find a sequence $ t_n\in T $ such that $ \left\Vert t_n \right\Vert \to \infty $. Then we consider the set $ T\cup (-T) = \{t\}_{t\in T}\cup \{ -t \}_{t\in T} $, using the symmetry of $ g\sim \mathcal{N}(0,I) $, we have
+    \begin{align*}
+        w(T) = w(-T) \geq \dfrac{ 1 }{ 2 } w(T\cup (-T)) 
+    \end{align*}
+    and we have $ T_n:= \{t_n, -t_n\}\subseteq  T\cup (-T) $. For such $ T_n $ we notice that
+    \begin{align*}
+        w(T_n) = & \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in \{t_n, -t_n\} } \left\langle t,g  \right\rangle  \right] \\ 
+        = & \mathbb{E}\left[ \left\vert \mathcal{N}(0, \left\Vert t_n  \right\Vert ^2) \right\vert  \right]\\
+        \geq & \left\Vert t_n \right\Vert \mathbb{E}\left[ \left\vert \mathcal{N}(0,1) \right\vert  \right] \\
+        =& \left\Vert t_n \right\Vert \sqrt{2/\pi}  
+    \end{align*}
+    so using $ T_n \subset T\cup (-T) $
+    \begin{align*}
+        w(T) \geq \dfrac{ 1 }{ 2 } w(T\cup (-T)) \geq \dfrac{ 1 }{ 2 } w(T_n) \geq \dfrac{ 1 }{ 2 } \left\Vert t_n \right\Vert \sqrt{2/\pi} \to \infty 
+    \end{align*}
+    thus if $ T $ is unbounded, $ w(T) $ is unbounded. Here we have the contradiction so if $ w(T) $ is finite, $ T $ is bounded.
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+
+    \item[$ \Leftarrow $] If $ T $ is bounded, say $ \left\Vert t  \right\Vert \leq \tau $, $ \forall t\in T $, we have
+    \begin{align*}
+        w(T) =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T } \left\langle t,g  \right\rangle  \right]\\
+        \leq & \mathbb{E}\left[ \mathop{ \sup  }\limits_{t \in T } \left\Vert t  \right\Vert \cdot \left\Vert g  \right\Vert  \right] \\
+        \leq & \mathbb{E}\left[  \tau \left\Vert g \right\Vert  \right] \\
+        \leq & \tau \mathbb{E}\left[ \sqrt{\chi^2_n} \right] \\
+        \leq & \tau \sqrt{\mathbb{E}\left[ \chi^2_n  \right] }\\
+        = & \tau \sqrt{n} < \infty
+    \end{align*}
+    
+
+\end{itemize}
+
+    
+\subsection{}
+
+Using the unitarity of $ g \sim Ug \sim \mathcal{N}(0,I) $, we have
+\begin{align*}
+    w(UT+y)=& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle Ut+y, g \right\rangle   \right]  \\
+    =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle U'(Ut+y), g  \right\rangle   \right]  \\
+    =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t + Uy, g  \right\rangle   \right]  \\
+    =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t, g  \right\rangle + \left\langle Uy, g \right\rangle   \right]  \\
+    =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t, g  \right\rangle  \right] + \mathbb{E}\left[ \left\langle Uy, g \right\rangle  \right]  \\\
+    =& w(T) + \left\langle Uy, 0 \right\rangle  \\
+    =& w(T)
+\end{align*}
+
+
+\subsection{}
+
+For any $ t_1,t_2\in T $ and $ \alpha \in \mathbb{R} $, we have $ t_\alpha  := \alpha t_1 + (1-\alpha )t_2\in \mathrm{conv}(T) $. And we have for any $ g\in \mathbb{R } $
+\begin{align*}
+     \left\langle t_\alpha , g \right\rangle = \alpha \left\langle t_1, g \right\rangle + (1-\alpha )\left\langle t_2, g \right\rangle \leq \sup_{t\in \{t_1,t_2\}} \left\langle t, g \right\rangle
+\end{align*}
+the above statement holds for any $ t_1,t_2\in T $, thus prove the statement (because for any $ \tilde{t}\in \mathrm{conv}(T) $ we can always find such $ t_1,t_2\in T $ and $ \alpha  $ that $ \tilde{t} = \alpha t_1 + (1-\alpha )t_2 $).
+
+
+\subsection{}
+
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item We have
+    \begin{align*}
+        w(T+S)=& \mathbb{E}\left[ \mathop{ \sup  }\limits_{r\in T+S} \left\langle r, g \right\rangle  \right]  \\ 
+        =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T, s\in S} \left\langle t+s, g \right\rangle  \right]  \\
+        =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t, g  \right\rangle + \mathop{ \sup  }\limits_{s\in S} \left\langle s, g \right\rangle  \right]  \\
+        =& w(T) + w(S)
+    \end{align*}
+    \item We have
+    \begin{align*}
+        w(aT)=& \mathbb{E}\left[ \mathop{ \sup  }\limits_{r\in aT} \left\langle r, g \right\rangle  \right]  \\
+        =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle at, g \right\rangle  \right]  \\
+        =&\begin{cases}
+            a\mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t, g \right\rangle  \right]  & a\geq 0\\
+            -a\mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t, g \right\rangle  \right]  & a<0
+        \end{cases} \\
+        =& \left\vert a  \right\vert w(T)
+    \end{align*}
+    
+    
+    
+    
+\end{itemize}
+
+\subsection{}
+$ w(T) = \dfrac{ 1 }{ 2 }w(T)+\dfrac{ 1 }{ 2 }  w(-T) = \dfrac{ 1 }{ 2 }w(T-T) $ is trivial using the previous results. Thus we have
+\begin{align*}
+    w(T) = \dfrac{ 1 }{ 2 }w(T-T) = \dfrac{ 1 }{ 2 }\mathbb{E}\left[ \mathop{ \sup  }\limits_{x,y\in T } \left\langle x-y,g  \right\rangle  \right] 
+\end{align*}
+
+
+\subsection{}
+
+It suffices the consider a centered (in the sense that $ \left\Vert t  \right\Vert \leq b = \mathrm{ diam }(T)/2  $) set $ T $ due to previous arguments that $ w(T) $ is invariant under unitary and translation. We have
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item[\textit{(i)}] Already proved in (a). Assume $ \tilde{t} $ being the 'boundary' point of $ T $, i.e. $ \left\Vert \tilde{t} \right\Vert = b $, we have
+    \begin{align*}
+        w(T)\geq  \dfrac{ 1 }{ 2 } w(T\cup (-T)) \geq \dfrac{ 1 }{ 2 } w(\{\tilde{t}, -\tilde{t}\}) \geq \dfrac{ 1 }{ 2 } \left\Vert \tilde{t} \right\Vert \sqrt{2/\pi} = b\sqrt{2/\pi} = \dfrac{ \mathrm{diam }(T) }{ \sqrt{2\pi} } 
+    \end{align*}
+    
+    \item[\textit{(ii)}] Already proved in (b).
+    \begin{align*}
+        w(T) =& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T } \left\langle t,g  \right\rangle  \right]\\
+        \leq & \mathbb{E}\left[ \mathop{ \sup  }\limits_{t \in T } \left\Vert t  \right\Vert \cdot \left\Vert g  \right\Vert  \right] \\
+        \leq & \mathbb{E}\left[  b \left\Vert g \right\Vert  \right] \\
+        \leq & b \mathbb{E}\left[ \sqrt{\chi^2_n} \right] \\
+        \leq &b\sqrt{\mathbb{E}\left[ \chi^2_n  \right] }\\
+        = & \dfrac{ \sqrt{n} }{ 2 }  \mathrm{diam }(T)
+    \end{align*}
+    
+        
+    
+    
+\end{itemize}
+
+Together we have
+\begin{align*}
+    \dfrac{ \mathrm{diam }(T) }{ \sqrt{2\pi} } \leq w(T) \leq \dfrac{ \sqrt{n} }{ 2 }  \mathrm{diam }(T) 
+\end{align*}
+
+
+
+
+\section{}
+
+Proof for
+\begin{align*}
+    \sqrt{\dfrac{ 2 }{ \pi  } \sum_{i=1}^n a_i^2} \mathop{ \leq  }\limits^{(i)} \sqrt{\dfrac{ 2 }{ \pi  }}\mathcal{R}(T)\mathop{ \leq  }\limits^{(ii)} \mathcal{G}(T) \mathop{ \leq  }\limits^{(iii)} \sqrt{\sum_{i=1}^n a_i^2}   
+\end{align*}
+
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item[\textit{(i)}] Note that $ T $ is symmetric w.r.t. the origin, so the $ \sup $ is always achieved at $ \mathrm{ sgn }(t_i)=\varepsilon _i  $:
+    \begin{align*}
+        \mathcal{R}(T)= & \mathbb{E}\left[ \mathop{ \sup  }\limits_{t: \sum t_i^2/a_i^2\leq 1} \sum_{i=1}^n\varepsilon _it_i  \right]  \\
+        =& \mathop{ \sup  }\limits_{t: \sum t_i^2/a_i^2\leq 1} \left\Vert t  \right\Vert _1 \\
+        =& \mathop{ \sup }\limits_{\tilde{t}\in\mathbb{S}^{n-1}} \sum_{i=1}^n \left\vert  a_i\tilde{t}_i \right\vert   
+    \end{align*}
+    The supermum is achieved at $ \tilde{t} \propto (a_1,\cdots,a_n) $, so we have $ \mathcal{R}(T) = \sqrt{\sum_{i=1}^n a_i^2} $.
+    \item[\textit{(ii)}] We have for any $ T $:
+    \begin{align*}
+        \mathcal{G}(T)= & \mathbb{E}_g\left[ \mathop{ \sup  }\limits_{t\in T} \sum_{i=1}^n g_it_i  \right]  \\
+        =& \mathbb{E}_{g,\varepsilon }\left[ \mathop{ \sup  }\limits_{t\in T} \sum_{i=1}^n\varepsilon _i\left\vert g_i \right\vert  t_i  \right]  \\
+        \geq &\mathbb{E}_\varepsilon \left[  \mathop{ \sup  }\limits_{t\in T} \sum_{i=1}^n\varepsilon _i \mathbb{E}_g\left[ \left\vert g_i \right\vert \right]   t_i   \right] \\
+        =& \sqrt{\dfrac{ 2 }{ \pi  }}\mathcal{R}(T)
+    \end{align*}
+    \item[\textit{(iii)}] We have
+    \begin{align*}
+        \mathcal{G}(T)= & \mathbb{E}_g\left[ \mathop{ \sup  }\limits_{t: \sum t_i^2/a_i^2\leq 1} \sum_{i=1}^n g_it_i  \right]  \\
+        =& \mathbb{E}_g\left[ \mathop{ \sup }\limits_{\tilde{t}\in\mathbb{S}^{n-1}} \sum_{i=1}^n  a_ig_i\tilde{t}_i   \right]  
+    \end{align*}
+    similarly, the supermum is achieved at $ \tilde{t} \propto (a_1g_i,\cdots,a_ng_n) $, then
+    \begin{align*}
+        \mathcal{G}(T) = & \mathbb{E}_g\left[ \sqrt{\sum_{i=1}^n a_i^2g_i^2} \right] \\
+        \leq & \sqrt{\mathbb{E}_g\left[ \sum_{i=1}^n a_i^2g_i^2 \right] } \\
+        = & \sqrt{\sum_{i=1}^n a_i^2}
+    \end{align*}
+    
+    
+\end{itemize}
+
+\section{}
+
+\begin{enumerate}[topsep=2pt,itemsep=2pt]
+    \item Construct the covering set sequence $ \{\mathcal{N}(T,\varepsilon _i)\}_{i=k}^K $, with $ \varepsilon _i $ and $ k,K $ chosen as follows:
+    \begin{align*}
+        \varepsilon _i =& 2^{-i}\\
+        k: & 2^{-k} \leq{ \mathrm{ diam }(T)  } \leq 2^{-k+1} \\
+        K: & 2^{-K-1} \leq \dfrac{ \kappa w(T) }{ \sqrt{n} } \leq 2^{-K}
+    \end{align*}
+    for some pre-determined small $ \kappa  $. i.e. we have $\mathrm{ diam }(T)\sim  \varepsilon _k \mathop{ \searrow }\limits^{\varepsilon _i = 2^{-i}}  \varepsilon _K\sim  \dfrac{ \kappa w(T) }{ \sqrt{n} } $.
+    
+    Using the covering sequence, for each given $ t\in T $, we can define maps $ \pi_i(t) $ as :
+    \begin{align*}
+        \pi_i(t)= t_i\in \mathcal{N}(T,\varepsilon _i),\, s.t.\, \pi_i(t)\in \mathcal{N}(t,\varepsilon _{i-1}) 
+    \end{align*}
+    % The choice of $ k $ is such that $ \mathcal{N}(T,\varepsilon _i) \sim  \left\vert T \right\vert  $, in this case since each $ t\in T $ can act as the covering center, the $ \varepsilon _{k} $ can be chosen arbitrarily small.
+
+    Then we have
+    \begin{align*}
+        w(T)=& \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t,g \right\rangle   \right]  \\
+        \leq & \sum_{i=k}^K \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle \pi_i(t)-\pi_{i-1}(t),g \right\rangle  \right]  + \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t-\pi_K(t),g \right\rangle   \right] 
+    \end{align*}
+    
+    \item For $ t-\pi_K(t) $ term, since $ K $ satisfy a $ \leq \dfrac{ w(T) }{ \sqrt{n} } $ covering, we have
+    \begin{align*}
+        \mathbb{E}\left[ \mathop{ \sup }\limits_{t\in T} \left\langle t-\pi_K(t), g \right\rangle   \right] \leq \left\Vert t-\pi_K(t) \right\Vert \mathbb{E}\left[ \left\Vert g  \right\Vert  \right] \leq \varepsilon _K\sqrt{n} \leq \kappa w(T)    
+    \end{align*}
+
+    \item For $ \pi_i(t)-\pi_{i-1}(t) $, which is $ \varepsilon _{i-1} $ bounded and there are at most $ N_2(T,\varepsilon _{i-1}) $ possible choices of $ \pi_i(t)-\pi_{i-1}(t) $, we can use maximal inequality for sub-Gaussian random variables to get
+    \begin{align*}
+        \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle \pi_i(t)-\pi_{i-1}(t),g \right\rangle  \right] \lesssim \varepsilon _{i-1}\sqrt{N_2(T,\varepsilon _{i-1})} \leq s(T)
+    \end{align*}
+    and there are $ \sim (K-k) $ terms in the sum, so we have
+    \begin{align*}
+        w(T)\leq& C(K-k)s(T) + \mathbb{E}\left[ \mathop{ \sup  }\limits_{t\in T} \left\langle t-\pi_k(t),g \right\rangle   \right] \\
+        \leq & C(K-k)s(T) + \kappa w(T)\\
+         \Rightarrow & w(T)\leq \dfrac{ C(K-k) }{ 1-\kappa }s(T) \lesssim ks(T)
+    \end{align*}
+    
+    \item Now we analyze the scale of $ K-k $: Note that we chose $ 2^{-k}\sim \mathrm{ diam } (T)  $ and $ 2^{-K} \sim \dfrac{ \kappa w(T) }{ \sqrt{n} }  $. Thus
+    \begin{align*}
+        K-k = -\log_2 \dfrac{\kappa w(T) }{ \sqrt{n} \mathrm{ diam }(T)  } \leq \log_2 \dfrac{ \sqrt{2\pi n} }{ \kappa  }\lesssim \log_2 n  
+    \end{align*}
+\end{enumerate}
+
+To summarize, we have
+\begin{align*}
+    w(T)\lesssim s(T)  \log(n) 
+\end{align*}
+
+
+
+
+\section{MJW 8.3}
+We first show Courant–Fischer variational representation of eigenvalue, given in Exercise 8.1. We have
+\begin{align*}
+    \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle Qx,x \right\rangle  =& \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \left\langle \sum_{i=j}^n \nu _iv_i, Q\sum_{i=j}^n \nu _iv_i  \right\rangle 
+\end{align*}
+in which $ \{v_i\} $ is an orthonormal basis of $ \mathbb{V} $. The transformation between $ \{v_i\} $ and $ \{q_i\} $ is denoted $ V=QP $, then
+\begin{align*}
+    \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \left\langle \sum_{i=j}^n \nu _iv_i, Q\sum_{i=j}^n \nu _iv_i  \right\rangle  = & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \left\langle \sum_{i=j}^n\nu _i \sum_{k=1}^n P_{ki}q_k, Q\sum_{i=j}^n\nu _i \sum_{k=1}^n P_{ki}q_k  \right\rangle  \\
+    =& \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \sum_{i,\tilde{i}}\sum_{k,\tilde{k}} \nu _i\nu _{\tilde{i}}P_{ki}P_{\tilde{k}\tilde{i}}\left\langle q_k,Qq_{\tilde{k}} \right\rangle  \\
+    =& \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \sum_{i,\tilde{i}}\sum_{k,\tilde{k}} \nu _i\nu _{\tilde{i}}P_{ki}P_{\tilde{k}\tilde{i}} \delta _{k,\tilde{k}}\gamma _k  \\
+    =& \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{\nu } \sum_{i,\tilde{i}} \sum_k \nu _i\nu _{\tilde{i}}P_{ki}P_{k\tilde{i}} \gamma _k  \\
+    =& \mathop{ \min }\limits_{P\in SO(n)}  \mathop{ \max  }\limits_{\left\Vert \nu \right\Vert =1, \nu\in \mathbb{R}^{n-j+1} } \sum_{k} \gamma _k (\sum_{i=j}^n P_{ki} \nu _i)^2  
+\end{align*}
+note that we have 
+\begin{align*}
+    \sum_{k=1}^n(\sum_{i=j}^n P_{ki} \nu _i)^2 = \sum_{i,j} \nu _i\nu _j\sum_{k=1}^n P_{ki}P_{kj} = \sum_{i,j} \nu _i\nu _j\delta _{ij} = \left\Vert \nu  \right\Vert ^2 = 1
+\end{align*}
+thus the above equation has $ \max $ reached when 
+\begin{align*}
+    \mathop{ \arg\min }\limits_{k} \sum_{i=j}^n P_{ki} \nu _i =1
+\end{align*}
+and then the $ \min $ is reached when the first $ j-1 $ rows of $ P $ is of shape
+\begin{align*}
+    \begin{bmatrix}
+        \tilde{P}_{(j-1)\times(j-1)} & 0 
+    \end{bmatrix} 
+\end{align*}
+and the extreme value is $ \gamma _j $.
+
+Using the representation we have $ \forall i,j\in[n] $:
+\begin{align*}
+    \gamma _i(A) = & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{i-1}}  \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle Ax,x \right\rangle  \\
+    \gamma _j(B) = & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{j-1}}  \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle Bx,x \right\rangle
+\end{align*}
+denote the corresponding $ \mathbb{V} $ as $ \mathbb{V}_A $ and $ \mathbb{V}_B $. The vector being $ x_A $ and $ x_B $ respectively.
+Note that we have $ \dim ( \mathbb{V}_A\cup \mathbb{V}_B)\leq i+j-2 $, i.e. $ \mathcal{V}_{i-1}\cup \mathcal{V}_{j-1}\subset \mathcal{V}_{i+j-2} $, we would have
+\begin{align*}
+    \gamma _{i+j-1}(A+B) = & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{i+j-2}}  \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle (A+B)x,x \right\rangle \\
+    \leq & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{i+j-2}}  \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle Ax,x \right\rangle + \mathop{ \max  }\limits_{x\in \mathbb{S}^{n-1} \cap \mathbb{V}^\perp} \left\langle Bx,x \right\rangle \\
+    \leq & \mathop{ \min }\limits_{\mathbb{V}\in\mathcal{V}_{i+j-2}}  \left\langle Ax_A,x_A \right\rangle + \left\langle Bx_B,x_B \right\rangle \\
+    \leq & \gamma _i(A) + \gamma _j(B)
+\end{align*}
+
+Taking $ j=1 $, $ A=Q $, $ B=R $ we have
+\begin{align*}
+     \gamma _i(Q)-\gamma _i(R) \leq \gamma _1(Q-R) = |||Q-R|||_2
+\end{align*}
+
+
+
+% \section{MJW 7.9}
+
+% \subsection{}
+% For any $ x,y \in \mathbb{L}_0(k)$ and $ \alpha \in [0,1] $ we have
+% \begin{align*}
+%     alpha x+(1-\alpha )y \in \mathbb{B}_2(1)  
+% \end{align*}
+% which is trivial because$ \mathbb{B}_2(1) $ itself is convex. Then it's left to show $ \alpha x+(1-\alpha )y\in \mathbb{B}_1(\sqrt{k}) $. Notice that 
+% \begin{align*}
+%     \left\Vert \alpha x+(1-\alpha )y \right\Vert _1 \leq & \alpha \left\Vert x \right\Vert _1 + (1-\alpha )\left\Vert y \right\Vert _1 \\
+%     \leq & \alpha \sqrt{k} + (1-\alpha )\sqrt{k} = \sqrt{k}
+% \end{align*}
+
+% \subsection{}
+% It suffices to prove that 
+% \begin{align*}
+%     \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}\leq 2\sup\{x\cdot a:a\in \mathrm{conv} \mathbb{L}_0(k)\} 
+% \end{align*}
+
+% We have
+% \begin{align*}
+%     \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}= & \min\{ \left\Vert x \right\Vert _2, \sqrt{k}\left\Vert x \right\Vert _\infty \}
+% \end{align*}
+% and 
+% \begin{align*}
+%     \sup\{x\cdot a:a\in \mathrm{conv}\mathbb{L}_0(k)\} =& \sup\{x\cdot a:a\in\mathbb{L}_0(k)\}\\
+%     =& \sqrt{\sum k \text{largest } x_i^2}
+% \end{align*}
+
+% For simplicity we consider $ \left\Vert x \right\Vert _2 =1 $. It suffices to show that
+% \begin{align*}
+%      2\sqrt{\sum k \text{largest } x_i^2} \geq \min \{1, \sqrt{k}\left\Vert x \right\Vert _\infty \}
+% \end{align*}
+
+% {\color{red}Not completed.}
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    
+    
+
+
+
+\end{document}
