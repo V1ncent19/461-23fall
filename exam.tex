@@ -25,8 +25,8 @@
 \usepackage{authblk}%titlepage作者信息
 \usepackage{nicematrix}%更好的矩阵标定
 \usepackage{fbox}%更多浮动体盒子
-
-
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
 
 %以下是页边距设置
 \usepackage[left=0.5in,right=0.5in,top=0.81in,bottom=0.8in]{geometry}
@@ -70,7 +70,7 @@
 
 
 %节标题格式设置
-\titleformat{\section}[block]{\large\bfseries}{Exercise \arabic{section}}{1em}{}[]
+\titleformat{\section}[block]{\large\bfseries}{Problem \arabic{section}}{1em}{}[]
 \titleformat{\subsection}[block]{}{    \arabic{section}.(\alph{subsection})}{1em}{}[]
 % \titleformat{\subsubsection}[block]{\normalsize\bfseries}{    \arabic{subsection}-\alph{subsubsection}}{1em}{}[]
 % \titleformat{\paragraph}[block]{\small\bfseries}{[\arabic{paragraph}]}{1em}{}[]
@@ -88,7 +88,7 @@
 
 \begin{center}\thispagestyle{plain}
 
-{\LARGE\textbf{Stat461 - 2023 Fall}}
+{\LARGE\textbf{Stat450 - 1 | 2024 Fall}}
 
 {\Large\textbf{Final Exam}}
 
@@ -109,16 +109,16 @@ Tuorui Peng\footnote{TuoruiPeng2028@u.northwestern.edu}
 
 \subsection{}
 
-Since $ X_i $ are i.i.d. r.v. with finite variance, using the Central Limit Theorem, we have
+Since $ X_i $ are i.i.d. r.v. with finite variance, we have
 \begin{align*}
-    \mathbb{E}\left[ \bar{X} _g\right] = \mu, \quad \text{Var}\left[ \bar{X} _g\right] = \dfrac{ \sigma ^2 }{ k }  
+    \mathbb{E}\left[ \bar{X} _g\right] = \mu, \quad \text{Var}\left[ \bar{X} _g\right] \leq \dfrac{ \sigma ^2 }{ k }  
 \end{align*}
 
 
 \begin{align*}
-    \mathbb{P}\left( \bar{X}_g -\mu \geq \dfrac{ 2\sigma  }{ \sqrt{k} }  \right) \leq & \mathbb{P}\left( (\bar{X}_g -\mu)^2 \geq \dfrac{ 4\sigma ^2 }{ k }  \right)   \\
-    \leq & \dfrac{ var(\bar{X}_g) }{ 4\sigma ^2/k }\\
-    =& \dfrac{ 1 }{ 4 }  
+    \mathbb{P}\left( \bar{X}_g -\mu \geq \dfrac{ 2\sigma  }{ \sqrt{k} }  \right) \leq & \mathbb{P}\left( (\bar{X}_g -\mu)^2 \geq \dfrac{ 4\sigma ^2 }{ k }  \right)   
+    \leq  \dfrac{ var(\bar{X}_g) }{ 4\sigma ^2/k }
+    \leq \dfrac{ 1 }{ 4 }  
 \end{align*}
 
 \subsection{}
@@ -130,17 +130,17 @@ thus we consider the events $ A_g:= \{\bar{X}_g \geq 2\sigma /\sqrt{k}\} $ with 
 
 Since $ \bar{X}_g $ are i.i.d., we have
 \begin{align*}
-    \mathbb{P}\left( \hat{\mu }-\mu \geq 2\sigma /\sqrt{k} \right) \leq & \mathbb{P}\left( \mathrm{Bin}(G,p) \geq G/2 \right)\\
-    \leq & \mathbb{P}\left( \mathrm{Bin}(G,1/4) \geq G/2 \right) 
+    \mathbb{P}\left( \hat{\mu }-\mu \geq 2\sigma /\sqrt{k} \right) \leq & \mathbb{P}\left( \mathrm{Bin}(G,p) \geq G/2 \right)
+    \leq  \mathbb{P}\left( \mathrm{Bin}(G,1/4) \geq G/2 \right) 
 \end{align*}
 
 
 \subsection{}
 Note that $ \mathrm{ Bin }(G,1/4)  $ is sub-gaussian with $ \sigma  $ at most $ \sqrt{G}/2 $, we thus have
 \begin{align*}
-    \mathbb{P}\left( \mathrm{Bin}(G,1/4) \geq G/2 \right) =& \mathbb{P}\left( \mathrm{Bin}(G,1/4) -G/4 \geq G/4 \right)\\
-    \leq & \exp\left( -\dfrac{ G^2 }{ 8G } \right)\\
-    =& \exp\left( -\dfrac{ G }{ 8 } \right) = \delta 
+    \mathbb{P}\left( \mathrm{Bin}(G,1/4) \geq G/2 \right) =& \mathbb{P}\left( \mathrm{Bin}(G,1/4) -G/4 \geq G/4 \right)
+    \leq  \exp\left( -\dfrac{ G^2 }{ 8G } \right)
+    = \exp\left( -\dfrac{ G }{ 8 } \right) = \delta 
 \end{align*}
 then we substitute $ k=n/G = \dfrac{ n  }{ 8\log 1/\delta  }  $ to result in (b) to obtain
 \begin{align*}
@@ -150,44 +150,122 @@ then we substitute $ k=n/G = \dfrac{ n  }{ 8\log 1/\delta  }  $ to result in (b)
 \subsection{}
 Denote $ t = 4\sigma \sqrt{\dfrac{ 2\log (1/\delta ) }{ n } }  $, which yields
 \begin{align*}
-    \mathbb{P}\left( \hat{\mu } -\mu \geq t \right) \leq \delta = e^{-\dfrac{ t^2 }{ 2 (4\sigma /\sqrt{n})^2 } } 
+    \mathbb{P}\left( \hat{\mu } -\mu \geq t \right) \leq \delta = e^{-\frac{ t^2 }{ 2 (4\sigma /\sqrt{n})^2 } } 
 \end{align*}
-which means that $ \hat{\mu } $ is sub-gaussian with $ \sigma  $ at most $ 4\sigma /\sqrt{n} $.
+and also we should have a similar lower bound of the same form. So $ \hat{\mu } $ is indeed sub-gaussian with parameter at most $ \sim 4\sigma /\sqrt{n} $.
 
 
 
 \section{}
-The proof is in Vershynin's book, Theorem 0.0.4. Here is a sketch of the proof.
 
-First we work on a Lemma: for any $ x\in P $, where $ P = \mathrm{conv}(x_1,\ldots,x_N) $ being the polytope, we have 
-\begin{align*}
-    \left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k x_i \right\Vert  \leq \dfrac{ 1 }{ \sqrt{k} } ,\quad \text{for some } \{x_i\}\subset P,\,\forall k\in [N]
-\end{align*}
-The proof is as follows:
-\begin{proof}
-    Note that for such polytope, for any $ x\in P $ we can always express it as (using Carahtéodory's theorem)
-    \begin{align*}
-        x = \sum_{i=1}^N \lambda _ix_i,\quad \sum_{i=1}^N \lambda _i = 1,\,\lambda _i\geq 0
-    \end{align*}
+% The proof is in Vershynin's book, Theorem 0.0.4. Here is a sketch of the proof.
+
+% First we work on a Lemma: for any $ x\in P $, where $ P = \mathrm{conv}(x_1,\ldots,x_N) $ being the polytope, we have 
+% \begin{align*}
+%     \left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k x_i \right\Vert  \leq \dfrac{ 1 }{ \sqrt{k} } ,\quad \text{for some } \{x_i\}\subset P,\,\forall k\in [N]
+% \end{align*}
+% The proof is as follows:
+% \begin{proof}
+%     Note that for such polytope, for any $ x\in P $ we can always express it as (using Carahtéodory's theorem)
+%     \begin{align*}
+%         x = \sum_{i=1}^N \lambda _ix_i,\quad \sum_{i=1}^N \lambda _i = 1,\,\lambda _i\geq 0
+%     \end{align*}
     
-    Consider an r.v. $ Z = x_i $ w.p. $ \lambda _i $, we have
-    \begin{align*}
-        \mathbb{E}\left[ Z \right] = x 
-    \end{align*}
-    then we create $ k $ copies of $ Z $, denoted as $ Z_1,\ldots,Z_k $, and we have
-    \begin{align*}
-        \mathbb{E}\left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k Z_i \right\Vert _2^2 =&  var(\dfrac{ 1 }{ k } \sum_{i=1}^k Z_i)\\
-        =& \dfrac{ 1 }{ k }var(Z)\\
-        \leq & \dfrac{ 1 }{ k } 
-    \end{align*}
-    since $ Z \in P $ is bounded by $ 1 $. Then since $ Z_i $ takes value in $ \{x_1,\ldots,x_N\} $, then there should always exist some realization of $ Z_i $ as $ Z_i = \text{some vertice} $ that satisfies the inequality.
-\end{proof}
+%     Consider an r.v. $ Z = x_i $ w.p. $ \lambda _i $, we have
+%     \begin{align*}
+%         \mathbb{E}\left[ Z \right] = x 
+%     \end{align*}
+%     then we create $ k $ copies of $ Z $, denoted as $ Z_1,\ldots,Z_k $, and we have
+%     \begin{align*}
+%         \mathbb{E}\left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k Z_i \right\Vert _2^2 =&  var(\dfrac{ 1 }{ k } \sum_{i=1}^k Z_i)\\
+%         =& \dfrac{ 1 }{ k }var(Z)\\
+%         \leq & \dfrac{ 1 }{ k } 
+%     \end{align*}
+%     since $ Z \in P $ is bounded by $ 1 $. Then since $ Z_i $ takes value in $ \{x_1,\ldots,x_N\} $, then there should always exist some realization of $ Z_i $ as $ Z_i = \text{some vertice} $ that satisfies the inequality.
+% \end{proof}
 
-Using the Lemma, we can just choose $ k=\lceil 1/\varepsilon ^2 \rceil $ and obtain that for any $ x\in P $, we have
+% Using the Lemma, we can just choose $ k=\lceil 1/\varepsilon ^2 \rceil $ and obtain that for any $ x\in P $, we have
+% \begin{align*}
+%     \exists \{x_i\}_{i=1}^k\subset P,\, \left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k x_i \right\Vert  \leq \dfrac{ 1 }{ \sqrt{k} } \leq \varepsilon  
+% \end{align*}
+% so such $ \{\dfrac{ 1 }{ k }\sum_{i=1}^k x_i: x_i\in\text{ vertices of }P\}  $ set is a $ \varepsilon  $ covering of $ P $, which has size at most $ N^k = N^{\lceil 1/\varepsilon ^2 \rceil} $. 
+It suffice to bound the card of packing set $ \mathcal{M}:=\mathcal{M}(P,\varepsilon ,\left\Vert \, \cdot \,  \right\Vert _2) $ since we have the relation between packing and covering set: 
 \begin{align*}
-    \exists \{x_i\}_{i=1}^k\subset P,\, \left\Vert x- \dfrac{ 1 }{ k } \sum_{i=1}^k x_i \right\Vert  \leq \dfrac{ 1 }{ \sqrt{k} } \leq \varepsilon  
+    \left\vert \mathcal{M}(P,2\varepsilon ,\, \cdot \, ) \right\vert\leq \left\vert \mathcal{N}(P,\varepsilon ,\, \cdot \, ) \right\vert \mathop{ \leq }\limits^{(i)}  \left\vert \mathcal{M}(P,\varepsilon ,\, \cdot \, ) \right\vert
 \end{align*}
-so such $ \{\dfrac{ 1 }{ k }\sum_{i=1}^k x_i: x_i\in\text{ vertices of }P\}  $ set is a $ \varepsilon  $ covering of $ P $, which has size at most $ N^k = N^{\lceil 1/\varepsilon ^2 \rceil} $. 
+We do so by the following steps:
+
+\begin{enumerate}[topsep=2pt,itemsep=2pt]
+    \item We first prove the following lemma (MJW Exercise 2.11 (b) but just up to constant)
+        \begin{lemma}\label{lem:1}
+        Given a sequence of i.i.d. $ N(0,1) $ guassian r.v. of size $ n $: $ \Xi=\{\xi _i\}_{i=1}^n $, we have
+        \begin{align*}
+            \mathbb{E}\left[ \sup_{\xi _i\in\Xi} \xi _i \right] \geq & \sqrt{\log n} \mathbb{P}\left( \exists\, \xi _i\in \Xi\text{ s.t. }\xi _i \geq \sqrt{\log n} \right) \\
+            \geq & \sqrt{2\log n}\big( 1- \Psi(\sqrt{\log n}) \big) ^n\\
+            \gtrsim & \sqrt{\log n}(1-1/n)^n \\
+            \gtrsim & \sqrt{\log n}
+        \end{align*}
+        in which $ \Psi(\cdot) $ is the c.d.f. of standard normal distribution. And we used the property of mills ratio 
+        \begin{align*}
+            m(\delta ) := \dfrac{ 1-\Psi(\delta ) }{ \phi (\delta ) } \sim \dfrac{ 1 }{ \delta  }    \Rightarrow 1-\Psi(\sqrt{\log n}) \gtrsim \dfrac{ 1 }{ \sqrt{n\log n} } \geq \dfrac{ 1 }{ n }  
+        \end{align*}
+        (From MJW Exercise 2.2 or refer to \href{https://en.wikipedia.org/wiki/Mills_ratio}{Wikipedia})
+
+        And if $ \xi _i $ are $ N(0,\sigma ^2) $, the bound would be $ \sigma \sqrt{\log n} $ (trivially by scaling).
+        \end{lemma}
+    \item  For $ \{p\}_{p\in \mathcal{M}}\subset \mathbb{R}^n $ we construct the following two gaussian processes:
+    \begin{align*}
+        X_p := & \left\langle p,w \right\rangle ,\quad w\sim N(0,I)\\
+        Y_p \mathop{ \sim }\limits^{i.i.d.} & N(0,\varepsilon ^2/2)
+    \end{align*}
+
+    Using the construction we have $ \forall p,q \in \mathcal{M} $:
+    \begin{align*}
+        \mathbb{E}\left[ (X_p-X_q)^2 \right] = & \left\Vert p-q \right\Vert _2^2 \geq \varepsilon ^2 = \mathbb{E}\left[ (Y_p-Y_q)^2 \right]      
+    \end{align*}
+    since $ \mathcal{M} $ is a packing set. 
+
+    Then we note the following inequality:
+    \begin{align*}
+        \mathbb{E}\left[ \sup_{p\in\mathcal{M}}X_p \right] \mathop{ \geq  }\limits^{(ii)}  \mathbb{E}\left[ \sup_{p\in\mathcal{M}}Y_p \right] \mathop{ \gtrsim }\limits^{(iii)} \varepsilon \sqrt{\log \left\vert \mathcal{M} \right\vert } 
+    \end{align*}
+    in which $ (ii) $ is due to Sudakov-Fernique inequality, and $ (iii) $ is due to Lemma \ref{lem:1}.
+    \item Now we upper bound $ \mathbb{E}\left[ \sup_{p\in\mathcal{M}}X_p \right] $ as follows: Since $ P $ is a polytope and $ \mathcal{M}\subset P $, we have
+    \begin{align*}
+        \mathbb{E}\left[ \sup_{p\in\mathcal{M}}X_p \right] \leq &\mathbb{E}\left[ \sup_{p\in P}X_p \right] = \mathbb{E}\left[ \sup_{p\in \text{vertices of }P}\left\langle p,w \right\rangle  \right] \mathop{ \lesssim }\limits^{(iv)}  \sqrt{\log N}
+    \end{align*}
+    in which $ (iv) $ used the maximal inequality by noticing that $ \left\langle p,w \right\rangle  $ are sub-gaussian with parameter $ 1 $.
+\end{enumerate}
+
+Putting the above steps together, we have
+\begin{align*}
+    \varepsilon \sqrt{\log \left\vert \mathcal{N} \right\vert }  \mathop{ \leq }\limits^{(i)}  \varepsilon \sqrt{\log \left\vert \mathcal{M} \right\vert } \mathop{ \lesssim }\limits^{(iii)} \mathbb{E}\left[ \sup_{p\in\mathcal{M}}Y_p \right]  \mathop{ \leq  }\limits^{(ii)} \mathbb{E}\left[ \sup_{p\in\mathcal{M}}X_p \right] \mathop{ \lesssim }\limits^{(iv)} \sqrt{\log N}
+\end{align*}
+i.e. for some absolute constant $ C $, we have
+\begin{align*}
+    \left\vert \mathcal{N}(P,\varepsilon ,\left\Vert \, \cdot \,  \right\Vert _2) \right\vert \leq N^{C/\varepsilon ^2}
+\end{align*}
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -237,17 +315,17 @@ Then we note that for any $ w,y \in \mathbb{R}^d $:
 \end{align*}
 which means that $ g(w) $ is 1-Lipschitz. Then we can apply the concentration inequality for Lipschitz function to obtain that 
 \begin{align*}
-    \mathbb{P}\left( \left\vert g(w) -\mathbb{E}g(w) \right\vert \geq t \right) \leq 2\exp\left( -\dfrac{ t^2 }{ 2\sigma ^2 }  \right)\\
+    \mathbb{P}\left( \left\vert g(w) -\mathbb{E}g(w) \right\vert \geq t \right) \leq 2\exp\left( -\dfrac{ t^2 }{ 2\sigma ^2 }  \right)
      \Rightarrow \mathbb{P}\left( \mathop{ \sup  }\limits_{v_S\in \mathbb{S}^{n-1}, v_S\in \mathrm{ col  } (X_S)} w'v_S \geq \sigma \sqrt{2s} + t \right) \leq 2\exp\left( -\dfrac{ t^2 }{ 2\sigma ^2 }  \right)
 \end{align*}
-letting $ \delta  = 2\exp\left( -\dfrac{ t^2 }{ 2\sigma ^2 }  \right) $ we have: w.p. at least $ 1-\delta  $, 
+letting $ \delta  = 2\exp\left( -\dfrac{ t^2 }{ 2\sigma ^2 }  \right) $ we have:
 \begin{align*}
-    \mathop{ \sup  }\limits_{v_S\in \mathbb{S}^{n-1}, v_S\in \mathrm{ col  } (X_S)} w'v_S \leq \sigma \bigl( \sqrt{2s} + \sqrt{2\log (2/\delta )} \bigr)
+    \mathop{ \sup  }\limits_{v_S\in \mathbb{S}^{n-1}, v_S\in \mathrm{ col  } (X_S)} w'v_S \leq \sigma \bigl( \sqrt{2s} + \sqrt{2\log (2/\delta )} \bigr),\quad \text{w.p. } \geq 1-\delta .
 \end{align*}
 
 
 \subsection{}
-Using union bound on $ \{S\subset [d]: \left\vert S  \right\vert \leq 2s\} $ we have
+Using union bound on $ \{S\subset [d]: \left\vert S  \right\vert \leq 2s\} $ we have:
 \begin{align*}
     \mathop{ \sup  }\limits_{\left\vert S  \right\vert \leq 2s }\mathop{ \sup  }\limits_{v_S\in \mathbb{S}^{n-1}, v_S\in \mathrm{ col  } (X_S)} w'v_S \leq \sigma \bigl( \sqrt{2s} + \sqrt{2\log (2/\delta )} \bigr)
 \end{align*}
@@ -261,15 +339,11 @@ then we obtain the bound
 \end{align*}
 
 
-
-
-
-
-
-
-
-
-
+\textbf{Remark:} We may also make re-labelling $ \delta (ed/2s)^2s \mapsto \delta $ to obtain a probability bound of $ 1-\delta $:
+\begin{align*}
+    \left\Vert X(\hat{\theta }-\theta ^*) \right\Vert _2 \leq&  2\sigma \bigl( \sqrt{2s} + \sqrt{2\log (2/\delta ) + 2s\log (ed/2s)} \bigr) \\
+    \lesssim & \sigma \left( \sqrt{s} + \sqrt{\log\dfrac{ 1 }{ \delta  } } + \sqrt{s\log\dfrac{ d }{ s } } \right) ,\quad \text{w.p. at least } 1- \delta
+\end{align*}
 
 
 

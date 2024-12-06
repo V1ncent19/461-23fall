@@ -88,7 +88,7 @@
 
 \begin{center}\thispagestyle{plain}
 
-{\LARGE\textbf{Stat461 - 2023 Fall}}
+{\LARGE\textbf{Stat450-1 2024Fall}}
 
 {\Large\textbf{HW2}}
 
@@ -376,42 +376,42 @@ Taking $ j=1 $, $ A=Q $, $ B=R $ we have
 \end{align*}
 
 
+ 
+\section{MJW 7.9}
 
-% \section{MJW 7.9}
+\subsection{}
+For any $ x,y \in \mathbb{L}_0(k)$ and $ \alpha \in [0,1] $ we have
+\begin{align*}
+    \alpha x+(1-\alpha )y \in \mathbb{B}_2(1)  
+\end{align*}
+which is trivial because$ \mathbb{B}_2(1) $ itself is convex. Then it's left to show $ \alpha x+(1-\alpha )y\in \mathbb{B}_1(\sqrt{k}) $. Notice that 
+\begin{align*}
+    \left\Vert \alpha x+(1-\alpha )y \right\Vert _1 \leq & \alpha \left\Vert x \right\Vert _1 + (1-\alpha )\left\Vert y \right\Vert _1 \\
+    \leq & \alpha \sqrt{k} + (1-\alpha )\sqrt{k} = \sqrt{k}
+\end{align*}
 
-% \subsection{}
-% For any $ x,y \in \mathbb{L}_0(k)$ and $ \alpha \in [0,1] $ we have
-% \begin{align*}
-%     alpha x+(1-\alpha )y \in \mathbb{B}_2(1)  
-% \end{align*}
-% which is trivial because$ \mathbb{B}_2(1) $ itself is convex. Then it's left to show $ \alpha x+(1-\alpha )y\in \mathbb{B}_1(\sqrt{k}) $. Notice that 
-% \begin{align*}
-%     \left\Vert \alpha x+(1-\alpha )y \right\Vert _1 \leq & \alpha \left\Vert x \right\Vert _1 + (1-\alpha )\left\Vert y \right\Vert _1 \\
-%     \leq & \alpha \sqrt{k} + (1-\alpha )\sqrt{k} = \sqrt{k}
-% \end{align*}
+\subsection{}
+It suffices to prove that 
+\begin{align*}
+    \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}\leq 2\sup\{x\cdot a:a\in \mathrm{conv} \mathbb{L}_0(k)\} 
+\end{align*}
 
-% \subsection{}
-% It suffices to prove that 
-% \begin{align*}
-%     \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}\leq 2\sup\{x\cdot a:a\in \mathrm{conv} \mathbb{L}_0(k)\} 
-% \end{align*}
+We have
+\begin{align*}
+    \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}= & \min\{ \left\Vert x \right\Vert _2, \sqrt{k}\left\Vert x \right\Vert _\infty \}
+\end{align*}
+and 
+\begin{align*}
+    \sup\{x\cdot a:a\in \mathrm{conv}\mathbb{L}_0(k)\} =& \sup\{x\cdot a:a\in\mathbb{L}_0(k)\}\\
+    =& \sqrt{\sum k \text{ largest } x_i^2}
+\end{align*}
 
-% We have
-% \begin{align*}
-%     \sup\{x\cdot a:a\in \mathbb{L}_1(k)\}= & \min\{ \left\Vert x \right\Vert _2, \sqrt{k}\left\Vert x \right\Vert _\infty \}
-% \end{align*}
-% and 
-% \begin{align*}
-%     \sup\{x\cdot a:a\in \mathrm{conv}\mathbb{L}_0(k)\} =& \sup\{x\cdot a:a\in\mathbb{L}_0(k)\}\\
-%     =& \sqrt{\sum k \text{largest } x_i^2}
-% \end{align*}
+For simplicity we consider $ \left\Vert x \right\Vert _2 =1 $. It suffices to show that
+\begin{align*}
+     2\sqrt{\sum k \text{largest } x_i^2} \geq \min \{1, \sqrt{k}\left\Vert x \right\Vert _\infty \}
+\end{align*}
 
-% For simplicity we consider $ \left\Vert x \right\Vert _2 =1 $. It suffices to show that
-% \begin{align*}
-%      2\sqrt{\sum k \text{largest } x_i^2} \geq \min \{1, \sqrt{k}\left\Vert x \right\Vert _\infty \}
-% \end{align*}
-
-% {\color{red}Not completed.}
+{\color{red}Not completed.}
 
 
 
