@@ -1,0 +1,176 @@
+\documentclass[twoside,12pt]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+\newcommand{\inprod}[2]{\ensuremath{\langle #1 , \, #2 \rangle}}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf 36-450: Advanced Statistical Theory II		\hfill Winter 2025} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribe: #4} }
+      \vspace{2mm}}}
+   \end{center}
+   \markboth{Lecture #1: #2}{Lecture #1: #2}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{0}{February 03}{Matey Neykov}{Tuorui Peng}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+
+
+
+
+
+\section{Example 2: Multinomial Testing}
+
+\textbf{Motivation: }We are curious that: given a lottery with $ d $ balls, is the lottery fair? That is, is the probability of each ball being drawn equal to $ 1/d $?
+
+\subsection{Problem Statement}
+
+We have the distribution family $ \{\mathbb{P}_\theta \}_{\theta \in\Theta } $ for which $ \mathbb{P}_\theta  $ is supported on $ [d]:= \{1,2,\ldots, d\} $, and satisfies
+\begin{align*}
+   \Theta =\big\{\theta :\, p_\theta (i)\geq 0,\quad \sum_{i=1}^d p_\theta (i) = 1\big\} 
+\end{align*}
+
+And we consider the uniformality test, i.e. the parameter of interest is 
+\begin{align*}
+   \{\theta _0\} = \Theta _0 = \big\{\theta :\, p_\theta (i) = 1/d,\quad \forall i\in [d]\big\} 
+\end{align*}
+w.r.t. the corresponding alternative. The rejection region we consider takes the form  of $ \ell_1 $ norm, i.e. our testing problem $ \hat{\psi}_n $
+\begin{align*}
+   H_0: p_\theta = p_{\theta _0}=\mathrm{ Unif }[d]  \longleftrightarrow H_a:p_\theta \neq p_{\theta _0}
+\end{align*}
+in the sense that we can control the probability of error
+\begin{align*}
+   \mathbb{P}_0\left( \hat{\psi}_n=1 \right) + \mathop{ \sup }\limits_{p_\theta \in H_1} \mathbb{P}_\theta \left( \hat{\psi}_n = 0 \right) \leq \varepsilon  
+\end{align*}
+for which, note that we have the relation between probability of error and the total variation distance $ d_\mathrm{ TV }  $, it suffices to control the total variation distance, which would leads to the following form of rejection region represented by $ \ell_1 $ norm:
+\begin{align*}
+   \text{Rejection Region} = \big\{ \theta :\, \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 >\epsilon \big\}
+\end{align*}
+
+\textbf{Goal:} We are curious about the (asymptotic) behaviour of the critical value $ \epsilon  $.
+
+\subsection{Challenge}
+
+Compared with the previous example of mean hypothesis testing, in which we can access an unbiased estimator (up to a constant) to the $ \left\Vert y \right\Vert _2^2 $, here an unbiased estimator to the $ \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 $ is intractable. Thus we consider using other related norm to bound it.
+
+
+
+
+
+
+\section{Upper Bound Side}
+
+
+
+Denote our data $ X = \{X_i\}_{i=1}^n $, $ X_i = \{X_{i1},X_{i2},\ldots,X_{id}\} $, $ X_i \in \{\hat{e}_1,\ldots,\hat{e}_{d}\} $ where $ \hat{e}_{j} $ is the $ j $-th canonical basis vector in $ \mathbb{R}^d $. Then we have the following estimator for $ \left\Vert p_\theta - p_{\theta _0} \right\Vert _2^2 $:
+
+\begin{lemma}
+   With $ \mathop{ X }\limits_{n\times d}  $ being the data defined above and $ p_{\theta _0} = \mathrm{ Unif }[d] $, we have
+   \begin{align*}
+      \mathbb{E}\left[ \binom{n}{2}^{-1}\sum_{i\neq j}X_i'X_j - \dfrac{ 1 }{ d } \right] = \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2  .
+   \end{align*}
+   
+\end{lemma}
+
+\begin{proof}
+   Note that
+   \begin{align*}
+      \mathbb{E}_\theta \left[ X_iX_j \right]  =& \delta _{ij} + (1-\delta _{ij})\sum_{k=1}^dp_\theta (k)^2
+   \end{align*}
+   we have
+   \begin{align*}
+      \mathbb{E}\left[ \binom{n}{2}^{-1}\sum_{i\neq j}X_i'X_j - \dfrac{ 1 }{ d } \right] =& \binom{n}{2}^{-1}\sum_{i\neq j}\mathbb{E}_\theta \left[ X_iX_j \right] - \dfrac{ 1 }{ d }\\
+      =& \sum_{k=1}^dp_\theta (k)^2 - \dfrac{ 1 }{ d }\\
+      =& \sum_{k=1}^d \big( p_\theta (k) - \dfrac{ 1 }{ d } \big)^2\\
+      =& \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2.
+   \end{align*}
+   
+   
+\end{proof}
+
+
+
+
+
+
+
+
+\end{document}
+
+
+
+
+
