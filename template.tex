@@ -9,6 +9,7 @@
 \setlength{\parskip}{0.1 in}
 
 \usepackage{amsmath,amsfonts,graphicx}
+\usepackage{amssymb}
 
 \newcommand{\inprod}[2]{\ensuremath{\langle #1 , \, #2 \rangle}}
 
@@ -92,7 +93,21 @@
 
 
 
+
+
 \section{Example 2: Multinomial Testing}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IMPORTANT: PLEASE ADD THE FOLLOWING \usepackage{} IN THE .tex FILE
+% \usepackage{amssymb}
+% so that we can use \gtrsim
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \textbf{Motivation: }We are curious that: given a lottery with $ d $ balls, is the lottery fair? That is, is the probability of each ball being drawn equal to $ 1/d $?
 
@@ -103,44 +118,72 @@ We have the distribution family $ \{\mathbb{P}_\theta \}_{\theta \in\Theta } $ f
    \Theta =\big\{\theta :\, p_\theta (i)\geq 0,\quad \sum_{i=1}^d p_\theta (i) = 1\big\} 
 \end{align*}
 
-And we consider the uniformality test, i.e. the parameter of interest is 
+And we consider the uniformality test, i.e. the (null) parameter of interest is 
 \begin{align*}
    \{\theta _0\} = \Theta _0 = \big\{\theta :\, p_\theta (i) = 1/d,\quad \forall i\in [d]\big\} 
 \end{align*}
-w.r.t. the corresponding alternative. The rejection region we consider takes the form  of $ \ell_1 $ norm, i.e. our testing problem $ \hat{\psi}_n $
+w.r.t. the corresponding alternative:
 \begin{align*}
-   H_0: p_\theta = p_{\theta _0}=\mathrm{ Unif }[d]  \longleftrightarrow H_a:p_\theta \neq p_{\theta _0}
+   H_0: p_\theta = p_{\theta _0}=\mathrm{ Unif }[d]  \longleftrightarrow H_1:p_\theta \neq p_{\theta _0}
 \end{align*}
-in the sense that we can control the probability of error
+and the testing is s.t. the risk is controlled:
 \begin{align*}
-   \mathbb{P}_0\left( \hat{\psi}_n=1 \right) + \mathop{ \sup }\limits_{p_\theta \in H_1} \mathbb{P}_\theta \left( \hat{\psi}_n = 0 \right) \leq \varepsilon  
+   R_{\hat{\psi},\varepsilon }:=\mathbb{P}_0\left( \hat{\psi}_n=1 \right) +
+    \mathop{ \sup }\limits_{p_\theta \in H_1} \mathbb{P}_\theta \left( \hat{\psi}_n = 0 \right)  \leq \eta 
 \end{align*}
 for which, note that we have the relation between probability of error and the total variation distance $ d_\mathrm{ TV }  $, it suffices to control the total variation distance, which would leads to the following form of rejection region represented by $ \ell_1 $ norm:
 \begin{align*}
-   \text{Rejection Region} = \big\{ \theta :\, \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 >\epsilon \big\}
+   \text{Rejection Region}_\varepsilon  = \big\{ \theta :\, \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 >\epsilon \big\}
 \end{align*}
 
-\textbf{Goal:} We are curious about the (asymptotic) behaviour of the critical value $ \epsilon  $.
-
-\subsection{Challenge}
-
-Compared with the previous example of mean hypothesis testing, in which we can access an unbiased estimator (up to a constant) to the $ \left\Vert y \right\Vert _2^2 $, here an unbiased estimator to the $ \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 $ is intractable. Thus we consider using other related norm to bound it.
-
+\textbf{Goal:} We are curious about the (asymptotic) behaviour of the critical value $ \epsilon^*  $:
+\begin{align*}
+   \varepsilon ^* = \mathop{ \inf }\{\varepsilon :\, \inf_{\hat{\psi}}R_{\hat{\psi},\varepsilon }\leq \eta  \}
+\end{align*}
 
 
 
 
 
-\section{Upper Bound Side}
+
+
+
+
+
+\subsection{Upper Bound Side}
+
+\subsubsection{Challenge}
+
+If we can construct an estimator to $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _1 $, then a test based on this estimator would be a valid one. But here an unbiased estimator to the $ \left\Vert p_\theta -p_{\theta _0}  \right\Vert  _1 $ is intractable (compared with the previous example of mean hypothesis testing, in which we can access an unbiased estimator to $ \left\Vert y   \right\Vert _2^2 $). Thus we consider using other related norm to bound it.
+
+\subsubsection{Roadmap of the upper bound side}
+
+\begin{enumerate}
+   \item (Lower) bound $ \varepsilon  $, i.e. $ \ell_1 $ norm, which further bound  $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 $; notice that $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 $ can be easily estimated, so we can construct the test based on its estimator $ T $
+   \item As required by Neyman-Pearson criterion, we construct the rejection region boundary $ t_\alpha  $ that can control the type I error $ \alpha  $ by
+   \begin{align*}
+      t_\alpha = \sqrt{\dfrac{ 1 }{ \alpha  }var_{\theta _0}(T) }
+   \end{align*}
+   \item The $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2  $ bound yields an upper bound on $ var_\theta (T) $;
+   \item then guarentee that
+   \begin{align*}
+      \mathbb{E}_{\theta \in \Theta _{H_a}}\left[ T \right] \geq t_\alpha + \sqrt{\dfrac{ 1 }{ \beta  }var_{\theta }(T) }  
+   \end{align*}
+   which further makes sure that the type II error $ \beta  $ is controlled, and we have a valid test.
+\end{enumerate}
+
+\subsubsection{Proof of the upper bound}
+
+Since we have by Cauchy-Schwarz inequality that $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 $
 
 
 
 Denote our data $ X = \{X_i\}_{i=1}^n $, $ X_i = \{X_{i1},X_{i2},\ldots,X_{id}\} $, $ X_i \in \{\hat{e}_1,\ldots,\hat{e}_{d}\} $ where $ \hat{e}_{j} $ is the $ j $-th canonical basis vector in $ \mathbb{R}^d $. Then we have the following estimator for $ \left\Vert p_\theta - p_{\theta _0} \right\Vert _2^2 $:
 
 \begin{lemma}
-   With $ \mathop{ X }\limits_{n\times d}  $ being the data defined above and $ p_{\theta _0} = \mathrm{ Unif }[d] $, we have
+   With $ \mathop{ X }\limits_{n\times d}  $ being the data defined above and $ p_{\theta _0} = \mathrm{ Unif }[d] $, we have the following $ U $-statistics:
    \begin{align*}
-      \mathbb{E}\left[ \binom{n}{2}^{-1}\sum_{i\neq j}X_i'X_j - \dfrac{ 1 }{ d } \right] = \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2  .
+      \mathbb{E}_\theta \left[ T \right] := \mathbb{E}_\theta \left[ \binom{n}{2}^{-1}\sum_{i< j}X_i'X_j - \dfrac{ 1 }{ d } \right] = \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2  .
    \end{align*}
    
 \end{lemma}
@@ -152,7 +195,7 @@ Denote our data $ X = \{X_i\}_{i=1}^n $, $ X_i = \{X_{i1},X_{i2},\ldots,X_{id}\}
    \end{align*}
    we have
    \begin{align*}
-      \mathbb{E}\left[ \binom{n}{2}^{-1}\sum_{i\neq j}X_i'X_j - \dfrac{ 1 }{ d } \right] =& \binom{n}{2}^{-1}\sum_{i\neq j}\mathbb{E}_\theta \left[ X_iX_j \right] - \dfrac{ 1 }{ d }\\
+      \mathbb{E}_\theta \left[ \binom{n}{2}^{-1}\sum_{i< j}X_i'X_j - \dfrac{ 1 }{ d } \right] =& \binom{n}{2}^{-1}\sum_{i< j}\mathbb{E}_\theta \left[ X_iX_j \right] - \dfrac{ 1 }{ d }\\
       =& \sum_{k=1}^dp_\theta (k)^2 - \dfrac{ 1 }{ d }\\
       =& \sum_{k=1}^d \big( p_\theta (k) - \dfrac{ 1 }{ d } \big)^2\\
       =& \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2.
@@ -163,9 +206,215 @@ Denote our data $ X = \{X_i\}_{i=1}^n $, $ X_i = \{X_{i1},X_{i2},\ldots,X_{id}\}
 
 
 
+\begin{lemma}\label{lem:var}
+   For the above $ U $-statistics, we have
+   \begin{align*}
+      var_\theta (T) = &\binom{n}{2}^{-1}\big(\left\Vert p_\theta  \right\Vert _2^2 -\left\Vert p_\theta  \right\Vert _2^4 \big) + \binom{n}{2}^{-2} n(n-1)(n-2)\big(\left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta  \right\Vert _2^4\big)\\
+      \asymp&\dfrac{ \left\Vert p_\theta  \right\Vert _2^2 -\left\Vert p_\theta  \right\Vert _2^4 }{ n^2 } + \dfrac{ \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta  \right\Vert _2^4 }{ n } 
+   \end{align*}
+   
+   
+\end{lemma}
+
+\begin{proof}
+   Leave as an exercise.
+\end{proof}
+
+Now we can decide the rejection region. By chebyshev's inequality, we have \textbf{under $ H_0 $} that $ var_{\theta _0}(T)=\binom{n}{2}^{-1}\frac{1}{d}(1-\frac{1}{d}) $ and rejection region should take the following form:
+\begin{align*}
+   T > t_\alpha := \sqrt{\dfrac{ 1 }{ \alpha  }var_{\theta _0}(T) }= \sqrt{\dfrac{ 1 }{ \alpha  }\binom{n}{2}^{-1}\frac{1}{d}(1-\frac{1}{d})  } \asymp \dfrac{ 1 }{ n\sqrt{d} } 
+\end{align*}
+so that $ \text{type I error} \leq \alpha  $. Now it suffices to find the critical rate $ \varepsilon \asymp \text{func}(n,d) $ s.t. $ \text{type II error} \leq \beta  $. We guarentee so by ensuring 
+\begin{align*}
+   \mathbb{E}_{\theta }\left[ T \right] \geq& t_\alpha + \sqrt{\dfrac{ 1 }{ \beta  }var_{\theta }(T) } \\
+    \text{i.e. }    \mathbb{E}_{ \theta \in \Theta _{H_a}}\left[ T \right]  =& \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2\\
+    \geq& t_\alpha + \sqrt{\dfrac{ 1 }{ \beta  }var_{\theta }(T) }\\
+    \gtrsim & \dfrac{ 1 }{ n\sqrt{d} } + \sqrt{var_{\theta }(T)}\\
+    \asymp &\dfrac{ 1 }{ n\sqrt{d} } + \sqrt{\dfrac{ \left\Vert p_\theta  \right\Vert _2^2 -\left\Vert p_\theta  \right\Vert _2^4 }{ n^2 } + \dfrac{ \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta  \right\Vert _2^4 }{ n }}
+\end{align*}
+and it suffices to upper bound $ var_{\theta }(T)  $
 
 
 
+
+
+
+\begin{lemma}
+   Under some $ \theta \in \Theta _{H_a} $, we have
+   \begin{align*}
+      var_\theta (T)\lesssim & \dfrac{ \left\Vert p_\theta  \right\Vert _2^2  }{ n^2 } + \dfrac{ \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta  \right\Vert _2^4 }{ n }\tag{1}\\
+      \left\Vert p_\theta  \right\Vert _2^2 =& \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 +\dfrac{ 1 }{ d } \tag{2}\\
+      \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta \right\Vert _2^4 \leq& \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^3 + \dfrac{ 3 }{ d }\left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2   \tag{3}
+   \end{align*}
+\end{lemma}
+
+\begin{proof}
+\begin{enumerate}
+   \item Trivial by Lemma \ref{lem:var}.
+   \item We have
+   \begin{align*}
+      \left\Vert p_\theta  \right\Vert _2^2 = & \sum_{i=1}^d p_\theta (i)^2= \sum_{i=1}^d \big( p_\theta (i) -p_{\theta _0}(i) + \dfrac{ 1 }{ d } \big)^2= \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 +\dfrac{ 1 }{ d }
+   \end{align*}
+   
+   \item By the above we have $ \left\Vert p_\theta  \right\Vert _2^2 \geq \frac{1}{d} $. Substituting this into the formula we have
+   \begin{align*}
+      \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta \right\Vert _2^4 \leq & \left\Vert p_\theta  \right\Vert _3^3 - \dfrac{ 1 }{ d^2 }\\
+      =&\sum_{i=1}^d p_\theta (i)^3 - \dfrac{ 1 }{ d^2 }\\
+      =&\sum_{i=1}^d \big( p_\theta (i) -p_{\theta _0}(i) + \dfrac{ 1 }{ d } \big)^3 - \dfrac{ 1 }{ d^2 }\\
+      =&\left\Vert p_\theta -p_{\theta _0} \right\Vert _3^3 + \dfrac{ 3 }{ d }\left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 \\
+      \leq&    \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^3 + \dfrac{ 3 }{ d }\left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2   \tag{2}
+   \end{align*}
+   where in the last step we utilize the relation between $ \ell_2 $ and $ \ell_3 $ norms.
+\end{enumerate}
+
+   
+   
+   
+      
+\end{proof}
+
+
+
+Putting the three together we have the desired upper bound that:
+\begin{align*}
+    var_\theta (T)\lesssim & \dfrac{ \left\Vert p_\theta  \right\Vert _2^2  }{ n^2 } + \dfrac{ \left\Vert p_\theta  \right\Vert _3^3 - \left\Vert p_\theta  \right\Vert _2^4 }{ n }\\
+    \lesssim & \dfrac{ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 +\frac{1}{d} }{ n^2 } + \dfrac{ \left\Vert p_\theta- p_{\theta _0} \right\Vert _2^3 + \frac{3}{d}\left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 }{ n }  
+\end{align*}
+combined with the condition for $ \mathbb{E}_\theta \left[ T \right]  $, the optimal optimal rate of $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 $ should be chosen s.t.
+\begin{align*}
+   \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 \gtrsim &\dfrac{ 1 }{ n\sqrt{d} }+ \sqrt{ \dfrac{ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 +\frac{1}{d} }{ n^2 } + \dfrac{ \left\Vert p_\theta- p_{\theta _0} \right\Vert _2^3 + \frac{3}{d}\left\Vert p_\theta -p_{\theta _0} \right\Vert _2^2 }{ n }  } \\
+   \asymp& \dfrac{ 1 }{ n\sqrt{d} } + \dfrac{ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2 }{ n } + \dfrac{ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2^{3/2} }{ \sqrt{n} } + \dfrac{ \left\Vert p_\theta -p_{\theta _0} \right\Vert _2 }{ \sqrt{nd} }   \\
+    \Rightarrow \left\Vert p_\theta -p_{\theta _0} \right\Vert _2 \gtrsim & \max \big\{  \dfrac{ 1 }{ n } , \dfrac{ 1 }{ nd } , \dfrac{ 1 }{ n^{1/2}d^{1/4} }     \big\}
+\end{align*}
+combined with the relation between $ \ell_2 $ and $ \ell_1 $ norms that $ \left\Vert \, \cdot \,  \right\Vert _2 \geq \left\Vert \, \cdot \,  \right\Vert _1/\sqrt{d} $, we get the condition that $ \left\Vert \, \cdot \,  \right\Vert _1 $ (i.e. $ \varepsilon  $) should satisfy:
+\begin{align}\label{eq:eps}
+   \sqrt{d}\left\Vert p_\theta - p_{\theta _0} \right\Vert _2^2 \geq \left\Vert p_\theta - p_{\theta _0} \right\Vert _1 \geq \varepsilon \geq \max\big\{ \dfrac{ d^{1/2} }{ n }, \dfrac{ 1 }{ nd^{1/2} }, \dfrac{ d^{1/4} }{ n^{1/2} } \big\}   
+\end{align}
+
+Note that we have a trivial bound that $ \left\Vert p_\theta -p_{\theta _0} \right\Vert _1 \leq 2 = \Theta (1)  $, so the term that would eventually take effect in equation \ref{eq:eps} is the term $ \dfrac{ d^{1/4} }{ n^{1/2} }$, which gives that optimal rate:
+\begin{align*}
+   \varepsilon \gtrsim \dfrac{ d^{1/4} }{ n^{1/2} } 
+\end{align*}
+
+
+
+
+
+
+
+\subsection{Lower Bound Side}
+
+For lower bound side, we conversely consider that we have lower bound of type I and type II error, which suffices to upper bound the total variation distance $ d_{\mathrm{ TV }}  $ noticing the following relation:
+
+\begin{align*}
+      \mathbb{P}_0\left( \hat{\psi}_n=1 \right) + \mathop{ \sup }\limits_{p_\theta \in H_1} \mathbb{P}_\theta \left( \hat{\psi}_n = 0 \right) \geq (1-d_{\mathrm{ TV }}(p_\theta ,p_{\theta _0})) \gtrsim \mathrm{const} \Rightarrow d_{\mathrm{ TV }}(p_\theta ,p_{\theta _0}) \leq c < 1
+\end{align*}
+Note that by Jensen's inequality we have relation $ d_\mathrm{ TV } \leq \frac{1}{2}\sqrt{\chi^2} $ so it suffices to upper bound the $ \chi^2 $ divergence as
+\begin{align*}
+   \chi^2(p_{\theta _0}^{\otimes n},p_\theta ^{\otimes n}) \lesssim c
+\end{align*}
+with $ \theta _0\sim \pi_{\theta _0} $, $ \theta \sim \pi_\varepsilon  $.
+
+We construct the following priors (in which WLOG we take $ d $ to be even, if not using $ (d+1)/2 $ and the magnitude should be the same):
+\begin{align*}
+   \pi_{\theta _0}:=& \mathrm{ dirac }(p_{\theta _0})\\
+   \pi_{\varepsilon  }=:& \mathrm{ Unif }(\left\{P_\zeta :\, p_\zeta (i) = \dfrac{ 1 + (-1)^i\zeta _{\lceil i/2 \rceil}\cdot 3\varepsilon  }{ d } \right\}_{\zeta \in \{\pm 1\}^{d/2}} ) 
+\end{align*}
+\textbf{Remark:} i.e. $ \pi_\varepsilon  $ is the uniform distribution over $ \{p_{\theta_\zeta } (i)\} $ vectors looks like:
+\begin{align*}
+   \mathop{ p_{\theta _\zeta } }\limits_{d\times 1} =\dfrac{ 1 }{ d } + \dfrac{ 3\varepsilon  }{ d }  \big( \underbrace{+1,-1}_{\text{pair 1}},     \underbrace{-1,+1}_{\text{pair 2}},\ldots, \underbrace{+1,-1}_{\text{pair d/2}} \big) 
+\end{align*}
+in which each "pair" can only take $ (+1,-1) $ or $ (-1,+1) $. This construction ensures that $ \left\Vert p_{\theta _\zeta }-p_{\theta _0} \right\Vert _1 = 3\varepsilon  = \Theta (\varepsilon  ) $.
+
+ 
+
+
+
+
+Then:
+\begin{align*}
+   \chi^2(\mathbb{E}_{\theta \sim \pi_\varepsilon }\left[ p_\theta ^{\otimes n} \right] \Vert p_{\theta _0}^{\otimes n} ) +1 \mathop{ = }\limits^{(i)}& \mathbb{E}_{\zeta ,\tilde{\zeta } \sim \mathrm{ Unif }(\{\pm\}^{d/2}) }\left[ \mathbb{E}_{X_1^n\mathop{ \sim }\limits^{i.i.d.} p_{\theta _0}}\left[ \dfrac{ \mathbb{P}_\zeta ^{\otimes n}\mathbb{P}_{\tilde{\zeta }}^{\otimes n} }{ (\mathbb{P}_{\theta _0}^{\otimes n})^2 }  \right]\right]  \\
+   \mathop{ = }\limits^{(ii)} & \mathbb{E}_{\zeta ,\tilde{\zeta } \sim \mathrm{ Unif }(\{\pm\}^{d/2}) }\left[ \underbrace{\mathbb{E}_{X\sim p_{\theta _0}}\left[ \dfrac{ \mathbb{P}_\zeta \mathbb{P}_{\tilde{\zeta }}}{ (\mathbb{P}_{\theta _0})^2 }  \right]}_{\text{(*)}}\,^n\right] 
+\end{align*}
+where $ (i) $ according to Ingster-Suslina's method, $ (ii) $ is due to the tensorization property of $ \chi^2 $ divergence: $ \chi^2(\prod_{i=1}^n P_i\Vert \prod_{i=1}^n Q_i) + 1 = \prod_{i=1}^n(\chi^2(P_i\Vert Q_i)+1) $. Now we turn to the term $ (*) $, which can be further computed as:
+\begin{align*}
+   \text{(*)}=\mathbb{E}_{X\sim p_{\theta _0}}\left[ \dfrac{ \mathbb{P}_\zeta \mathbb{P}_{\tilde{\zeta }}}{ (\mathbb{P}_{\theta _0})^2 }  \right]=& \mathbb{E}_{X\sim p_{\theta _0}}\left[ \dfrac{ (\mathbb{P}_\zeta (x)-\mathbb{P}_{\theta _0}(x))(\mathbb{P}_{\tilde{\zeta }} (x)-\mathbb{P}_{\theta _0}(x)) }{ \mathbb{P}_{\theta _0}^2(x) } +1 \right]\\
+   =& \sum_{x=1}^d \dfrac{ (\mathbb{P}_\zeta (x)-\mathbb{P}_{\theta _0}(x))(\mathbb{P}_{\tilde{\zeta }} (x)-\mathbb{P}_{\theta _0}(x)) }{1/d^2} +1\\
+   =& \sum_{x=1}^d\dfrac{ (-1)^x\zeta _{\lceil x/2 \rceil}\cdot 3\varepsilon }{d}\cdot \dfrac{ (-1)^x\tilde{\zeta }_{\lceil x/2 \rceil}\cdot 3\varepsilon }{d} \cdot d +1\\
+   =& \dfrac{ 18\varepsilon ^2 }{ d }\zeta '\tilde{\zeta } +1
+\end{align*}
+substituting this back to the previous equation we have:
+\begin{align*}
+   \chi^2(\mathbb{E}_{\theta \sim \pi_\varepsilon }\left[ p_\theta ^{\otimes n} \right] \Vert p_{\theta _0}^{\otimes n} ) +1=& \mathbb{E}_{\zeta ,\tilde{\zeta } \sim \mathrm{ Unif }(\{\pm\}^{d/2}) }\left[ \underbrace{\mathbb{E}_{X\sim p_{\theta _0}}\left[ \dfrac{ \mathbb{P}_\zeta \mathbb{P}_{\tilde{\zeta }}}{ (\mathbb{P}_{\theta _0})^2 }  \right]}_{\text{(*)}}\,^n\right] \\
+   =& \mathbb{E}_{\zeta ,\tilde{\zeta } \sim \mathrm{ Unif }(\{\pm\}^{d/2}) }\left[\left( \dfrac{ 18\varepsilon ^2 }{ d }\zeta '\tilde{\zeta } +1 \right)^n\right] \\
+   \leq& \mathbb{E}_{\zeta ,\tilde{\zeta } \sim \mathrm{ Unif }(\{\pm\}^{d/2}) }\left[ \exp\left[ \dfrac{ 18n\varepsilon ^2 }{ d }\zeta '\tilde{\zeta } \right] \right] \\
+   =& \prod_{i=1}^{d/2}\mathbb{E}_{\zeta _i,\tilde{\zeta }_i' \sim \mathrm{ Unif }(\pm) }\left[ \exp\left[ \dfrac{ 18n\varepsilon ^2 }{ d }\zeta _i\tilde{\zeta }_i  \right] \right] \\
+   =& \cosh\left[ \dfrac{ 18n\varepsilon ^2 }{ d } \right]^{d/2} \\
+   \leq& \exp\left[ \dfrac{ 162n^2\varepsilon ^4 }{ d^2 }  \right]^{d/2}\\
+   =& \exp\left[ \dfrac{ 81n^2\varepsilon ^4 }{ d }  \right] <c <\Theta (1)
+\end{align*}
+To ensure the condition we require $ n^2\varepsilon ^4/d \lesssim 1 $, i.e.
+\begin{align*}
+   \varepsilon \lesssim \dfrac{ d^{1/4} }{ n^{1/2} } 
+\end{align*}
+which is a matching lower bound to the upper bound side. 
+
+
+
+\subsection{Conclusion}
+
+Thus we have the optimal rate of $ \varepsilon  $ as:
+\begin{align*}
+   \varepsilon^* \asymp \dfrac{ d^{1/4} }{ n^{1/2} } 
+\end{align*}
+or equivalently
+\begin{align*}
+   n^* \asymp \dfrac{ \sqrt{d} }{ \varepsilon ^2 } 
+\end{align*}
+
+\textbf{Remark}: We would notice that this gives the same rate as gaussian location model ($ \varepsilon ^* \asymp d^{1/4}/n^{1/2} $), which is an interesting result.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+ 
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+\section{Other Reference}
+
+An alternative proof see \textit{Lecture notes on Information-theoretic methods for high-dimensional statistics} by Yihong Wu, Chapter 24.3, page 146.
 
 
 \end{document}

@@ -1,0 +1,409 @@
+\documentclass[11pt,a4paper]{article}
+%以下为所使用的宏包
+\usepackage{ulem}%下划线
+\usepackage{amsmath,amsfonts,amssymb,amsthm,amsbsy}%数学符号
+\usepackage{graphicx}%插入图片
+\usepackage{booktabs}%三线表
+%\usepackage{indentfirst}%首行缩进
+\usepackage{tikz}%作图
+\usepackage{appendix}%附录
+\usepackage{array}%多行公式/数组
+\usepackage{makecell}%表格缩并
+\usepackage{siunitx}%SI单位--\SI{number}{unit}
+\usepackage{mathrsfs}%数学字体
+\usepackage{enumitem}%列表间距
+\usepackage{multirow}%列表横向合并单元格
+\usepackage[colorlinks,linkcolor=red,anchorcolor=blue,citecolor=red]{hyperref}%超链接引用
+\usepackage{float}%图片、表格位置排版
+\usepackage{pict2e,keyval,fp,diagbox}%带有斜线的表格
+\usepackage{fancyvrb,listings}%设置代码插入环境
+\usepackage{minted}%代码环境设置
+\usepackage{fontspec}%字体设置
+\usepackage{color,xcolor}%颜色设置
+\usepackage{titlesec} %自定义标题格式
+\usepackage{tabularx}%列表扩展
+\usepackage{authblk}%titlepage作者信息
+\usepackage{nicematrix}%更好的矩阵标定
+\usepackage{fbox}%更多浮动体盒子
+
+
+
+%以下是页边距设置
+\usepackage[left=0.5in,right=0.5in,top=0.81in,bottom=0.8in]{geometry}
+
+%以下是段行设置
+\linespread{1.4}%行距
+\setlength{\parskip}{0.1\baselineskip}%段距
+\setlength{\parindent}{2em}%缩进
+
+
+%其他设置
+\numberwithin{equation}{section}%公式按照章节编号
+\newenvironment{point}{\raggedright$\blacktriangleright$}{}
+\newenvironment{algorithm}[1]{\vspace{12pt} \hrule\hrule \vspace{3pt} \noindent\textbf{\color[HTML]{E63F00}Algorithm } \,\textit{#1} \vspace{3pt} \hrule\vspace{6pt}}{\vspace{6pt}\hrule\hrule \vspace{12pt}} % 算法伪代码格式环境
+
+
+%代码环境\lst设置
+\definecolor{CodeBlue}{HTML}{268BD2}
+\definecolor{CodeBlue2}{HTML}{0000CD}
+\definecolor{CodeGreen}{HTML}{2AA1A2}
+\definecolor{CodeRed}{HTML}{CB4B16}
+\definecolor{CodeYellow}{HTML}{B58900}
+\definecolor{CodePurPle}{HTML}{D33682}
+\definecolor{CodeGreen2}{HTML}{859900}
+\lstset{
+    basicstyle=\tt,%字体设置
+    numbers=left, %设置行号位置
+    numberstyle=\tiny\color{black}, %设置行号大小
+    keywordstyle=\color{black}, %设置关键字颜色
+    stringstyle=\color{CodeRed}, %设置字符串颜色
+    commentstyle=\color{CodeGreen}, %设置注释颜色
+    frame=single, %设置边框格式
+    escapeinside=`, %逃逸字符(1左面的键)，用于显示中文
+    %breaklines, %自动折行
+    extendedchars=false, %解决代码跨页时，章节标题，页眉等汉字不显示的问题
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em, %设置边距
+    tabsize=4, %设置tab空格数
+    showspaces=false, %不显示空格
+    emph={TRUE,FALSE,NULL,NAN,NA,<-,},emphstyle=\color{CodeBlue2}, %其他高亮}
+}
+
+
+%节标题格式设置
+% \titleformat{\section}[block]{\large\bfseries}{Exercise \arabic{section}}{1em}{}[]
+% \titleformat{\subsection}[block]{}{    \arabic{section}.(\alph{subsection})}{1em}{}[]
+% \titleformat{\subsubsection}[block]{\normalsize\bfseries}{    \arabic{subsection}-\alph{subsubsection}}{1em}{}[]
+% \titleformat{\paragraph}[block]{\small\bfseries}{[\arabic{paragraph}]}{1em}{}[]
+
+
+% \titleformat{\sectioncommand}[shape]{format}{title-label}{sep}{before-title}[after-title]
+
+
+
+% 中文字号
+% 初号42pt, 小初36pt, 一号26pt, 小一24pt, 二号22pt, 小二18pt, 三号16pt, 小三15pt, 四号14pt, 小四12pt, 五号10.5pt, 小五9pt
+
+
+\begin{document}
+
+\begin{center}\thispagestyle{plain}
+
+{\LARGE\textbf{Stat450 2025 Winter - Final Report}}
+
+{\Large\textbf{On Minimax Rate of $ \ell_1 $ norm in Gaussian Location Model}}
+
+Tuorui Peng\footnote{TuoruiPeng2028@u.northwestern.edu}
+\end{center}
+
+\thispagestyle{myheadings}\markright{Compiled using \LaTeX}
+\pagestyle{myheadings}\markright{Tuorui Peng}
+
+
+\begin{abstract}
+    In this project, we followed the idea of \cite{cai2011testing} to present the minimax rate for estimating non-smooth functions of mean in Gaussian location model. Specifically, we focused on the estimation of $ \left\Vert \theta  \right\Vert _1 := \sum_{i=1}^p \left\vert \theta _i \right\vert  $ from an observation $ X\sim \mathcal{N}(\theta ,I_p) $. The main result presented is that: the minimax rate under $ \ell_2 $ loss is $ M^2p^2\left(\frac{\log\log p}{\log p}\right)^2 $ for $ M $-bounded parameter, and $ \frac{p^2}{\log p} $ for unbounded case.
+\end{abstract}
+
+
+\section{Motivation and Introduction}
+
+\subsection{Introduction}
+
+Gaussian location model is a basic and important model in statistics. Here we focus on the $ \ell_2^2 $ loss Minimax rate for location parameter estimation. To be specific, we have $ X_1,\ldots, X_n\mathop{ \sim  }\limits^{i.i.d.}   \mathcal{N}(\theta , I_p )$ where $ \theta \in \Theta _p\subseteq \mathbb{R}^p $ is the parameter of interest. Some estimation problem includes $ T(\theta )=\theta  $, $ T(\theta )=\theta _{\max} $, $ T(\theta )= \left\Vert \theta  \right\Vert _2 $, $ T(\theta )=\left\Vert \theta  \right\Vert  _1 $, etc. The minimax rate under $ \ell_2^2 $ loss for these problems are well studied.
+\begin{align*}
+    \mathfrak{M}^*(T,\Theta _p):=&\mathop{ \inf }\limits_{\hat{T}} \mathop{ \sup }\limits_{\theta \in \Theta _p} \mathbb{E}_{  }\left[ (T(\theta) -\hat{T}(Y))^2 \right] 
+\end{align*}
+For example, we have some well-known results as follows:
+\begin{table}[H]
+    \centering
+    \renewcommand\arraystretch{1.15}
+    \begin{tabular}{|c|c|}
+        \hline
+        Estimation Problem & Minimax Rate \\
+        \hline
+        $ T(\theta )=\theta  $ & $ \frac{p}{n} $ \\
+        \hline
+        $ T(\theta )=\theta _{\max}  $ & $ \frac{p^2}{n} $ \\
+        \hline
+        $ T(\theta )=\left\Vert \theta  \right\Vert _2 $ & $ \frac{\sqrt{p}}{n} $ \\
+        \hline
+    \end{tabular}
+\end{table}
+In the lecture, we already proved the case of $ T(\theta )=\theta  $ (c.f. Lecture 5) and $ T(\theta )=\left\Vert \theta  \right\Vert _2 $ (c.f. Lecture 7\footnote{We got that $ \varepsilon ^* \asymp d^{1/4}/n^{1/2} $. Applying Le Cam's two-point method we have $ \mathfrak{M}^* \gtrsim (\varepsilon ^*)^2 \asymp d/n $.}). Here in this project, we will focus on the case of $ T(\theta )=\left\Vert \theta  \right\Vert  _1 $.
+
+Due to the property of $ \ell_2^2 $ loss, it suffices to consider one sample case and deduce that $ \mathfrak{M}_{n=n}=\mathfrak{M}_{n=1}/n $. i.e. our setting is that $ X\sim \mathcal{N}(\theta ,I_p) $ and the task is to estimate $ \left\Vert \theta  \right\Vert  _1 :=\sum_{i=1}^p \left\vert \theta _i \right\vert  $.
+
+
+\subsection{Challenge}
+
+$ \left\Vert \theta  \right\Vert _1 $ is a typical example of a non-smooth functional of parameter. While the distribution of normal distribution is `much too nice' by being analytic. e.g. our first trial of estimation might be $ \hat{T}(X)=\left\Vert X \right\Vert _1  $, however we would immediately see that it's biased by noticing that (take 1-dim as example):
+\begin{align*}
+    \int _\mathbb{R} \left\vert X \right\vert \dfrac{ 1 }{ \sqrt{2\pi} }\exp\left[ -\dfrac{ (x-\theta ) ^2}{ 2 }  \right]  \,\mathrm{d}x \mathop{ = }\limits^{?}\left\vert \theta  \right\vert   
+\end{align*}
+in which left hand side is a smooth function of $ \theta  $ and right hand side is not. Actually no estimator $ \hat{T}(X) $ can satisfy the analytic property, so we have no access to an unbiased estimator to $ \left\vert \theta  \right\vert  $.
+
+However, we do have access to some other analytic estimators. For example, we can safely estimate moments (i.e. polynomial functions) of $ \theta $. Thus here the key recipe is to approximate $ \left\vert \theta  \right\vert  $ by a polynomial function (of proper degree) of $ \theta  $.
+
+
+
+\subsection{Outline of the Proof}
+We would first do the proof for bounded case:
+\begin{enumerate}[topsep=2pt,itemsep=2pt]
+    \item We can approximate $ \left\vert x \right\vert  $ by a degree-$ d $ polynomial up to $ \asymp \frac{1}{d} $ precision;
+    \item The variance of the polynomial estimator is $ \asymp p\cdot d! $;
+    \item A bias-variance trade-off gives us a desired upper bound side;
+    \item Control $ \chi^2 $ divergence to get the lower bound side.
+\end{enumerate}
+Then a extension to unbounded case is easy by noticing that: when $ \left\Vert \theta  \right\Vert _1 $ is large enough, $ \left\Vert X  \right\Vert   $ would be similar to $ \left\Vert \theta  \right\Vert _1 $, so we only need to consider the case that $ \left\Vert \theta  \right\Vert _1 $ is small enough, and study the rate of the `boundary', then go back to bounded case.
+
+
+
+\section{Useful Knowledge}
+
+\subsection{Polynomial Approximation of $ \left\vert x  \right\vert  $}\label{sec:polyapprox}
+
+A main recipe is the approximation of $ \left\vert x \right\vert , x\in [-1,1] $ by a polynomial function. In this project, we use $ d $ for the degree of polynomial, and we seek a best degree-$ d $ polynomial estimator $ G_d^*(x) $ in the sense that reaches:
+\begin{align*}
+    \delta _d(f=\left\vert \, \cdot \,  \right\vert )=\mathop{ \inf }\limits_{G_d\in \mathcal{P}_d} \mathop{ \max }\limits_{x\in [-1,1]} \big\vert \left\vert x \right\vert - G_d(x) \big\vert 
+\end{align*}
+i.e. optimal in $ \left\Vert \, \cdot \,  \right\Vert _\infty $, in which $ \mathcal{P}_d $ is the set of degree-$ d $ polynomial functions. The classical Chebyshev's alternation theorem \cite{cai2011testing} states that the optimal polynomial $ G_d^*(x) $ is s.t.: $ \left\vert x \right\vert - G_d^*(x) $ take value consecutively $ \delta _d,-\delta _d, \delta _d,\ldots $. And Berstein \cite{bernstein1914meilleure} proved that this optimal error is of order $ \asymp \frac{1}{d} $:
+\begin{align*}
+    \lim_{d\to \infty }d\delta _d(f=\left\vert \, \cdot \,  \right\vert )=\beta _*\approx 0.2802\tag{Berstein's constant}
+\end{align*}
+Upgrade to $ p $ dimensional, we have that the optimal polynomial approximation of $\left\Vert \theta  \right\Vert _1 $ with precision rate $ \asymp \frac{p}{d} $.
+
+
+
+\subsection{Hermite Polynomial}
+
+Hermite polynomial(s) is a set of orthogonal polynomial with respect to the normal density weight function $ \exp\left[ -\frac{ x^2}{ 2 }  \right]  $, defined as:
+\begin{align*}
+    H_r(x) :=(-1)^r\exp\left[ \frac{ x^2}{ 2 }  \right] \dfrac{ \mathrm{d}^r }{ \mathrm{d}x^r }\exp\left[ -\frac{ x^2}{ 2 }  \right]
+\end{align*}
+with orthogonality:
+\begin{align*}
+    \left\langle H_r, H_s \right\rangle =&\int _\mathbb{R} H_r(x)H_s(x)\exp\left[ -\frac{ x^2}{ 2 }  \right] \,\mathrm{d}x = \mathbb{E}_{ Z\sim \mathcal{N}(0,1) }\left[ H_r(Z)H_s(Z) \right]  = r!\delta _{rs}
+\end{align*}
+and it form a direct estimator to moments:
+\begin{align*}
+    \mathbb{E}_{ Z\sim \mathcal{N}(\theta ,1) }\left[ H_r(Z) \right] =&\int _\mathbb{R} H_r(x)\exp\left[ -\frac{ (x-\theta)^2}{ 2 }  \right] \,\mathrm{d}x = \theta ^r
+\end{align*}
+
+When using Hermite polynomial up to degree $ d $ to approximate $ \left\vert x \right\vert _1  $ as
+\begin{align*}
+    \left\vert x \right\vert _1 \approx G^*_d(x) = \sum_{r=0}^d \alpha _rH_r(x),\quad x\in [-1,1],
+\end{align*}
+we have that $ \alpha _r  \lesssim \mathrm{const}^{\mathrm{const} \cdot d} $, i.e. $ \log \alpha _r \lesssim d $ \cite{cai2011testing}.\footnote{Intuitively, $ \alpha _rx^r \lesssim 1 $.}
+
+
+
+
+
+
+
+
+\section{Bounded Case}
+
+We first focus on the bounded case that $ \theta \in \Theta _p(M):= \{\theta \in \mathbb{R}^p: \left\vert \theta  \right\vert _\infty \leq M \} $ for some $ M>0 $. WLOG we assume $ M=1 $.
+
+
+
+
+\subsection{Upper Bound Side}
+
+We use the above mentioned polynomial approximation (the degree to be determined later) to construct a (good enough) estimator, which would give us a upper bound side of the minimax rate.
+\begin{align*}
+    \hat{T}_i(X)= G^*_d(X_i) = \sum_{r=0}^d \alpha _rH_r(X_i),\quad i \in [p],
+\end{align*}
+for which we know that the $ \ell_2^2 $ loss can be decomposed to the following bias-variance trade-off:
+\begin{align*}
+     \text{Bias: }&\left\vert \hat{T}(X)- \left\vert X \right\vert _1  \right\vert = \delta _d(f=\left\vert \, \cdot \,  \right\vert ) \lesssim \dfrac{ p }{ d },\\
+     \text{Variance: }&var(\hat{T}(X))=\sum_{i=1}^p var(\hat{T}_i(X)) \lesssim p\cdot d! \cdot  \mathrm{const}^{\mathrm{const} \cdot d} \lesssim p\cdot d!.
+\end{align*}
+To obtain the optimal loss rate, we have:
+\begin{align*}
+    \text{optimal }d: &\quad (\dfrac{ p }{ d } )^2 \asymp p\cdot d! \mathop{  \Rightarrow  }\limits^{(i)}  d_p\asymp \dfrac{ \log p }{ \log\log p } \\
+     \Rightarrow \text{optimal loss: }&\quad \mathfrak{M}^* \lesssim \left( \dfrac{ p }{ d_p } \right) ^2 +p\cdot d_p! \lesssim p^2\left( \dfrac{ \log\log p }{ \log p } \right) ^2.
+\end{align*}
+where $(i)$ uses Stirling's formula $ d! \sim (d/e)^d $.
+
+
+
+\subsection{Lower Bound Side}
+
+We use the $ \chi^2 $ divergence + Le Cam's two-point method we introduced in the lecture to get the lower bound side. We wanna construct 
+
+
+
+
+\begin{point}
+    (Upper) Bounding $ \chi^2 $ divergence by selecting proper prior and degree of polynomial.
+\end{point}
+
+Denote the (posterior) distribution of Null and Alternative as $ f_0(x)=\pi_0(\theta ) \otimes \phi(x;\theta ) = \int_\mathbb{R} \phi (x-t) \pi_0(\,\mathrm{d}t) $ and $ f_1(x)=\pi_1(\theta ) \otimes \phi(x;\theta ) = \int_\mathbb{R} \phi (x-t) \pi_1(\,\mathrm{d}t) $ respectively. We have the following two useful lemmas:
+\begin{itemize}[topsep=2pt,itemsep=0pt]
+    \item By the convexity of $ \xi \mapsto e^{-\xi } $, we have
+    \begin{align*}
+        f_0(x) =&\int_\mathbb{R} \phi (x-t) \pi_0(\,\mathrm{d}t) \\
+        \geq&\dfrac{ 1 }{ \sqrt{2\pi} }\exp\left[ -\int_\mathbb{R} \dfrac{ (x-t)^2 }{ 2 }\pi_0(\,\mathrm{d}t)  \right] \\
+        =& \phi (x)\exp\left[ -\dfrac{ 1 }{ 2 } \int t^2 \pi_0(\,\mathrm{d}t)  \right]\\
+        \geq&\phi (x)\exp\left[ -\dfrac{ 1 }{ 2 } \right]
+    \end{align*}
+    \item Taylor expansion of normal distribution:
+    \begin{align*}
+        \phi (x-t)=&\sum_{k=0}^\infty H_k(x)\phi (x) \dfrac{ t^k }{ k! }.  
+    \end{align*}
+    and thus we have
+    \begin{align*}
+        f_1(x)=&\int_\mathbb{R} \phi (x-t) \pi_1(\,\mathrm{d}t) \\
+        =&\int_\mathbb{R} \sum_{k=0}^\infty H_k(x)\phi (x) \dfrac{ t^k }{ k! } \pi_1(\,\mathrm{d}t) \\
+        =&\sum_{k=0}^\infty \dfrac{ 1 }{ k! }  H_k(x)\phi (x)\int_\mathbb{R}  t^k \pi_1(\,\mathrm{d}t)
+    \end{align*}
+    (and similarly for $ f_0(x) $).
+    \item We study the following $ \chi^2 $ divergence:
+    \begin{align*}
+        \chi^2(f_1\big\Vert f_0) =&\int_\mathbb{R} \dfrac{ (f_1(x)-f_0(x))^2 }{ f_0(x) }\,\mathrm{d}x\\
+        \mathop{ = }\limits^{(i)} &\int_\mathbb{R} \dfrac{ \big( \sum_{k=0}^\infty \frac{ 1 }{ k! }  H_k(x)\phi (x) \int_{-1}^1  t^k (\pi_1(\,\mathrm{d}t) - \pi_0(\,\mathrm{d}t) )  \big)^2 }{ f_0(x) }\,\mathrm{d}x\\ 
+        \mathop{ = }\limits^{(ii)}&\int_\mathbb{R} \dfrac{ \big( \sum_{k=d+1}^\infty \frac{ 1 }{ k! }  H_k(x)\phi (x) \int_{-1}^1  t^k (\pi_1(\,\mathrm{d}t) - \pi_0(\,\mathrm{d}t) )  \big)^2 }{ f_0(x) }\,\mathrm{d}x\\ 
+        \mathop{ \leq }\limits^{(iii)}&e^{1/2}\int_\mathbb{R}  \big( \sum_{k=d+1}^\infty \frac{ 1 }{ k! }  H_k(x)\phi (x) \int_\mathbb{R}  t^k (\pi_1(\,\mathrm{d}t) - \pi_0(\,\mathrm{d}t) )  \big)^2\phi (x)^{-1} \,\mathrm{d}x\\
+        \mathop{ = }\limits^{(iv)}&e^{1/2}\sum_{k=d+1}^\infty \dfrac{ 1 }{ k! } \big(\int_{-1}^1t^k \pi_1(\,\mathrm{d}t) - \int_{-1}^1t^k \pi_0(\,\mathrm{d}t) \big)^2 \\
+        \leq&e^{1/2}\sum_{k=d+1}^\infty \dfrac{ 1 }{ k! } \\
+        \mathop{ \lesssim }\limits^{(v)}& \dfrac{ 1 }{ d! }
+    \end{align*}
+    where $ (i) $ using the above mentioned Taylor expansion, $ (ii) $ since our prior is selected s.t. having matching first $ d $ moments, $ (iii) $ using the lemma mentioned above, and $ (iv) $ using the orthogonality of Hermite polynomial, and $ (v) $ since $ 1/k! $ decays faster than geometric series so is also dominated by the leading them $ 1/d! $.
+\end{itemize}
+Thus we have:
+\begin{align*}
+    \chi^2\left(\mathbb{E}_{ \theta \sim \pi_1^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \big\Vert \mathbb{E}_{ \theta \sim \pi_0^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \right) +1 =& \chi^2\left( f_1 ^{\otimes p} \big\Vert f_0 ^{\otimes p} \right)\\
+    \mathop{ = }\limits^{(i)}& \Big( \chi^2(f_1\big\Vert f_0)  +1 \Big) ^p\\
+    \leq& (\dfrac{ c }{ d! } +1 )^p\\
+    \leq& \exp\left[ \dfrac{ cp }{ d! }  \right]
+\end{align*}
+Thus by selecting $ d_p\gtrsim  \dfrac{ \log p }{ \log\log p } $ we have $ \chi^2\left(\mathbb{E}_{ \theta \sim \pi_1^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \big\Vert \mathbb{E}_{ \theta \sim \pi_0^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \right)  \lesssim 1 $ and thus by Le Cam's two-point method we have:
+\begin{align*}
+    \mathfrak{M}^* \gtrsim & \varepsilon ^2\big(1 - d_\mathrm{ TV }\left(\mathbb{E}_{ \theta \sim \pi_1^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \big\Vert \mathbb{E}_{ \theta \sim \pi_0^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \right)\big) \\
+    \geq& \varepsilon ^2\big(1 - \dfrac{ 1 }{ 2 }\sqrt{\chi^2 \left(\mathbb{E}_{ \theta \sim \pi_1^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \big\Vert \mathbb{E}_{ \theta \sim \pi_0^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \right) } \big)\\
+    \gtrsim& \varepsilon ^2
+\end{align*}
+where for the rate of $ \varepsilon  $, we first describe its intuition, then formalize it. 
+
+
+\begin{point}
+    (Lower) Bounding the gap between Null and Alternative.
+\end{point}
+
+\textbf{Intuition: }As we mentioned in \autoref{sec:polyapprox}, a polynomial of degree $ d $ can approximate $ \left\vert x \right\vert  $ up to precision $ \delta _d(\left\vert \, \cdot \,  \right\vert ) = \frac{1}{d} $, so the smallest gap between Null and Alternative should also be of order $ \asymp \frac{1}{d} $.
+
+\textbf{Formalization: }We can formalize the above as a optimization problem:
+\begin{align*}
+    \mathop{ \arg\max }\limits_{\pi_0,\pi_1}& \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  \right]\\
+    w.r.t.& \mathbb{E}_{ \pi_0 }\left[ \theta ^k \right] =\mathbb{E}_{ \pi_1 }\left[ \theta ^k \right], k=0,1,\ldots,d
+\end{align*}
+i.e. we just take $ \pi_0,\pi_1 $ as the optimizer and it would yield $ \varepsilon =  \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  \right]$. In the preceeding part we have proved that with the constraint satisfied with proper $ d $, we have $ \mathfrak{M}^* \gtrsim \varepsilon ^2 $.
+
+Now solve the optimization problem by writing down the Lagrangian:
+\begin{align*}
+    \mathcal{L}(\pi_0,\pi_1, \lambda _1,\ldots,\lambda _d) =& \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  \right] -\sum_{k=0}^d\lambda _k\big( \mathbb{E}_{ \pi_0 }\left[ \theta ^k \right] -\mathbb{E}_{ \pi_1 }\left[ \theta ^k \right]  \big)\\
+    =& \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  -\sum_{k=0}^d\lambda _k\theta ^k  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  -\sum_{k=0}^d\lambda _k\theta ^k  \right]
+\end{align*}
+optimize w.r.t. $ \pi_0,\pi_1 $ gives us:
+\begin{align*}
+     \mathop{ \max }\limits_{ \pi_0,\pi_1}\mathcal{L}=& \mathop{ \max  }\limits_{\theta \in [-1,1] }[\left\vert \theta  \right\vert - \mathrm{ poly }_d(\theta )] - \mathop{ \min }\limits_{\theta \in [-1,1]}[\left\vert \theta  \right\vert - \mathrm{ poly }_d(\theta )]
+\end{align*}
+then optimize w.r.t. $ \lambda _k $ suffices to choosing the optimal degree-$ d $ polynomial approximation of $ \left\vert x \right\vert  $, for which we have study in \autoref{sec:polyapprox}:
+\begin{align*}
+    \mathop{ \max }\limits_{\pi_0,\pi_1} \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  \right]=&\min_{\lambda _{k=0}^d}\mathop{ \max }\limits_{ \pi_0,\pi_1}\mathcal{L} \\
+    =& \mathop{ \inf }\limits_{G_d\in \mathcal{P}_d} \mathop{ \max }\limits_{\theta \in [-1,1]} \big\vert \left\vert \theta  \right\vert - G_d(\theta ) \big\vert \\
+    =&\delta _d(\left\vert \, \cdot \,  \right\vert ) \\
+    \asymp& \dfrac{ 1 }{ d }
+\end{align*}
+
+
+\begin{point}
+    Result
+\end{point}
+
+Together we have:
+\begin{align*}
+    \mathfrak{M}^* \geq \big( p\mathop{ \max }\limits_{\pi_0,\pi_1} \mathbb{E}_{ \pi_0 }\left[ \left\vert \theta  \right\vert  \right] -\mathbb{E}_{ \pi_1 }\left[ \left\vert \theta  \right\vert  \right] \big)^2\big(1- d_\mathrm{ TV }\left(\mathbb{E}_{ \theta \sim \pi_1^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \big\Vert \mathbb{E}_{ \theta \sim \pi_0^{\otimes p} }\left[ p_\theta ^{\otimes p} \right] \right)  \big)
+    \gtrsim (\dfrac{ p }{ d } )^2\Theta (1) 
+\end{align*}
+with the optimal $ d_p\asymp \dfrac{ \log p }{ \log\log p } $, we have:
+\begin{align*}
+    \mathfrak{M}^* \gtrsim p^2\left( \dfrac{ \log\log p }{ \log p } \right) ^2
+\end{align*}
+
+
+
+\subsection{Conclusion for Bounded Case}
+
+Now putting back the scaling $ M $ we have:
+\begin{align*}
+    \mathfrak{M}^* \asymp M^2p^2\left( \dfrac{ \log\log p }{ \log p } \right) ^2 
+\end{align*}
+
+In the original paper \cite{cai2011testing} they provided the sharp Minimax risk:
+\begin{align*}
+    \mathfrak{M}^*(\Theta _p(M)) = \beta _*^2M^2p^2\left( \dfrac{ \log\log p }{ \log p } \right) ^2(1+o(1)),
+\end{align*}
+where $ \beta _* $ is the Berstein's constant  mentioned in \autoref{sec:polyapprox}.
+
+
+
+
+
+
+\section{Upgrade to Unbounded Case}
+
+Here we focus more on the spirit of how to upgrade the bounded case to unbounded case, and we will not go through the details of the proof.
+
+The idea is that: For small $ \theta  $, we apply the preceeding polynomial approximation estimator, while for large $ \theta  $, we can safely use $ \left\vert X \right\vert  $ as an estimator of $ \left\vert \theta  \right\vert  $. The cut-off between the two case is estimated by the maximization of normal variable: For $ X_1,\ldots,X_p \mathop{ \sim }\limits^{i.i.d.}\mathcal{N}(0,1)  $, w.h.p.
+\begin{align*}
+     \max_{i=1}^p\left\vert X_i \right\vert  \leq 2\sqrt{\log p }.
+\end{align*}
+
+\subsection{Upper Bound Side}
+
+For the upper bound side, we modify the "good enough" estimator to something look like $ \hat{T}= \mathrm{poly}_{d_p}(X)\mathbf{1}_{\left\vert X \right\vert \leq 2\sqrt{\log p}} + \left\vert X \right\vert \mathbf{1}_{\left\vert X \right\vert > 2\sqrt{\log p}}  $\footnote{To be specific, we split the data into pairs $ X=\{(X_{i1},X_{i2})\}_{i=1}^{n/2} $. In each pair, accroding to $ \left\vert X_{i1} \right\vert \gtrless  2\sqrt{\log p} $, we apply $ \mathrm{ poly }(X_{i2})  $ or $ \left\vert X_{i2} \right\vert  $ in the mean value $ \hat{T}=\sum_{i=1}^{n/2}\mathrm{ func }(X_{i2})  $. }. 
+
+
+% Detail computation of bias and variance is omitted here. The final result is:
+% \begin{align*}
+%     \text{Bias: }&\left\vert \hat{T}(X)- \left\vert X \right\vert _1  \right\vert \lesssim \sqrt{\log p}\dfrac{ p }{ d }\\
+%     \text{Variance: }&var(\hat{T}(X))\lesssim \sqrt{p}\log p
+% \end{align*}
+% which gives optimal $ d_p \sim \log p$
+% \begin{align*}
+%     \mathfrak{M}^* \lesssim 
+% \end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% add bibtex file
+\bibliographystyle{plain}
+\bibliography{report}
+
+
+
+
+
+\end{document}
